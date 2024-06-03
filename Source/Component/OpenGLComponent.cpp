@@ -26,6 +26,9 @@ OpenGLComponent::OpenGLComponent()
     // Set this instance as the renderer for the context.
     openGLContext.setRenderer(this);
 
+    // For painting over OpenGL - i guess this is set by default?
+    // openGLContext.setComponentPaintingEnabled(true);
+
     // Tell the context to repaint on a loop.
     openGLContext.setContinuousRepainting(true);
 
@@ -73,6 +76,9 @@ void OpenGLComponent::paint (juce::Graphics& g)
     g.drawText ("OpenGLComponent", getLocalBounds(),
                 juce::Justification::centred, true);   // draw some placeholder text
     */
+    g.setColour(juce::Colours::white);
+    g.setFont(15.0f);
+    g.drawFittedText("aldens p4vm", getLocalBounds(), juce::Justification::centred, 1);
 }
 
 void OpenGLComponent::resized()
@@ -143,7 +149,7 @@ void OpenGLComponent::createShaders()
         "uniform float  yPad;\n"
         "void main()\n"
         "{\n"
-        "gl_FragColor = vec4(yPad, xPad, 0.0, 1.0);\n"
+        "gl_FragColor = vec4(yPad, 0.0, 0.0, 1.0);\n"
         "}\n";
 
     std::unique_ptr<juce::OpenGLShaderProgram> shaderProgramAttempt = std::make_unique<juce::OpenGLShaderProgram>(openGLContext);
