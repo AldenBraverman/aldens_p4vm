@@ -15,6 +15,8 @@ Aldens_p4vmAudioProcessorEditor::Aldens_p4vmAudioProcessorEditor (Aldens_p4vmAud
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
+    
+    startTimerHz(60); // 60 FPS
     setSize (400, 300);
 }
 
@@ -38,9 +40,10 @@ void Aldens_p4vmAudioProcessorEditor::resized()
     // subcomponents in your editor..
 }
 
-void Aldens_p4vmAudioProcessorEditor::paintOverChildren(juce::Graphics& g)
+void Aldens_p4vmAudioProcessorEditor::timerCallback()
 {
-    g.setColour (juce::Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+    // DBG("Timer Callback!");
+    // timeFloat += 0.01f;
+    openGLComponent.openGLtimeFloat += 0.01f;
+    // DBG(timeFloat);
 }

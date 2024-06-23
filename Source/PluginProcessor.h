@@ -9,10 +9,24 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "MidiHandler.h"
 
 //==============================================================================
 /**
 */
+namespace ParameterID
+{
+    #define PARAMETER_ID(str) const juce::ParameterID str(#str, 1);
+
+    PARAMETER_ID(masterTranspose);
+    PARAMETER_ID(voiceOneTranspose);
+    PARAMETER_ID(voiceTwoTranspose);
+    PARAMETER_ID(voiceThreeTranspose);
+    PARAMETER_ID(voiceFourTranspose);
+
+    #undef PARAMETER_ID
+}
+
 class Aldens_p4vmAudioProcessor  : public juce::AudioProcessor
 {
 public:
@@ -53,7 +67,22 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    juce::AudioProcessorValueTreeState apvts { *this, nullptr, "Parameters", createParameterLayout() };
+    
 private:
+    void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
+    void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2);
+    
+    MidiHandler midiHandler;
+    
+    juce::AudioParameterFloat* masterTransposeParam;
+    juce::AudioParameterFloat* voiceOneTransposeParam;
+    juce::AudioParameterFloat* voiceTwoTransposeParam;
+    juce::AudioParameterFloat* voiceThreeTransposeParam;
+    juce::AudioParameterFloat* voiceFourTransposeParam;
+    
+    juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Aldens_p4vmAudioProcessor)
 };

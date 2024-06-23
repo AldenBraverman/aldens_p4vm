@@ -29,6 +29,12 @@ public:
     void openGLContextClosing() override;
 
     void handleAsyncUpdate() override;
+    
+    void mouseDown(const juce::MouseEvent&) override;
+    void mouseDrag(const juce::MouseEvent&) override;
+    void mouseUp(const juce::MouseEvent&) override;
+    
+    float openGLtimeFloat;
 
 private:
     juce::OpenGLContext openGLContext;
@@ -44,5 +50,11 @@ private:
     struct Uniforms;
     std::unique_ptr<Uniforms> uniforms;
     std::unique_ptr<juce::OpenGLShaderProgram> shader;
+    
+    juce::Point<float> lastMousePosition;
+
+    float xPadMousePosition;
+    float yPadMousePosition;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (OpenGLComponent)
 };

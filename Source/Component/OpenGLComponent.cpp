@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "OpenGLComponent.h"
+#include "PluginEditor.h"
 
 //==============================================================================
 OpenGLComponent::OpenGLComponent()
@@ -110,14 +111,16 @@ struct OpenGLComponent::Uniforms
     {
         resolution.reset(createUniform(openGLContext, shaderProgram, "resolution"));
 
-        // xPadUniform.reset(createUniform(openGLContext, shaderProgram, "xPad"));
-        // yPadUniform.reset(createUniform(openGLContext, shaderProgram, "yPad"));
+        xPadUniform.reset(createUniform(openGLContext, shaderProgram, "xPad"));
+        yPadUniform.reset(createUniform(openGLContext, shaderProgram, "yPad"));
     }
 
     std::unique_ptr<juce::OpenGLShaderProgram::Uniform> resolution;
     
-    // std::unique_ptr<juce::OpenGLShaderProgram::Uniform> xPadUniform;
-    // std::unique_ptr<juce::OpenGLShaderProgram::Uniform> yPadUniform;
+    std::unique_ptr<juce::OpenGLShaderProgram::Uniform> xPadUniform;
+    std::unique_ptr<juce::OpenGLShaderProgram::Uniform> yPadUniform;
+    
+    std::unique_ptr<juce::OpenGLShaderProgram::Uniform> uTime;
 
 private:
     static juce::OpenGLShaderProgram::Uniform* createUniform(juce::OpenGLContext& openGLContext,
@@ -149,7 +152,7 @@ void OpenGLComponent::createShaders()
         "uniform float  yPad;\n"
         "void main()\n"
         "{\n"
-        "gl_FragColor = vec4(yPad, 0.0, 0.0, 1.0);\n"
+        "gl_FragColor = vec4(yPad, xPad, 0.0, 1.0);\n"
         "}\n";
 
     std::unique_ptr<juce::OpenGLShaderProgram> shaderProgramAttempt = std::make_unique<juce::OpenGLShaderProgram>(openGLContext);
@@ -191,14 +194,17 @@ void OpenGLComponent::renderOpenGL()
     if (uniforms->resolution != nullptr)
         uniforms->resolution->set((GLfloat)renderingScale * getWidth(), (GLfloat)renderingScale * getHeight());
     
-    /*
+    
     if (uniforms->xPadUniform != nullptr)
-        uniforms->xPadUniform->set(xPadMousePosition / 640.0f);
+        uniforms->xPadUniform->set(xPadMousePosition / 400.0f);
         // DBG("xPadMousePosition: " + juce::String(xPadMousePosition));
 
     if (uniforms->yPadUniform != nullptr)
-        uniforms->yPadUniform->set(yPadMousePosition / 310.0f);
-    */
+        uniforms->yPadUniform->set(yPadMousePosition / 300.0f);
+    
+    if (uniforms->uTime != nullptr)
+        uniforms->uTime->set(openGLtimeFloat);
+    
     // DBG("xPadMousePosition: " + juce::String(xPadMousePosition));
     // =======================================================================================================================
     
@@ -244,4 +250,25 @@ void OpenGLComponent::openGLContextClosing()
 void::OpenGLComponent::handleAsyncUpdate()
 {
 
+}
+
+void OpenGLComponent::mouseDown(const juce::MouseEvent& event)
+{
+    mouseDrag(event);
+    xPadMousePosition = event.position.x;
+    yPadMousePosition = event.position.y;
+}
+
+void OpenGLComponent::mouseDrag(const juce::MouseEvent& event)
+{
+    lastMousePosition = event.position;
+    xPadMousePosition = event.position.x;
+    yPadMousePosition = event.position.y;
+}
+
+void OpenGLComponent::mouseUp(const juce::MouseEvent& event)
+{
+    // amplitude = 0.0f;
+    // repaint();
+    // DBG("Mouse Up!");
 }
