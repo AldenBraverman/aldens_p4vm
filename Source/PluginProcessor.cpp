@@ -22,6 +22,7 @@ Aldens_p4vmAudioProcessor::Aldens_p4vmAudioProcessor()
                        )
 #endif
 {
+    
 }
 
 Aldens_p4vmAudioProcessor::~Aldens_p4vmAudioProcessor()

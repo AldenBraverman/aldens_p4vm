@@ -18,6 +18,12 @@ public:
     MidiHandler();
     void midiMessage(uint8_t data0, uint8_t data1, uint8_t data2);
     
+    float masterTranspose;
+    float voiceOneTranspose;
+    float voiceTwoTranspose;
+    float voiceThreeTranspose;
+    float voiceFourTranspose;
+    
 private:
     void noteOn(int note, int velocity);
     void noteOff(int note);

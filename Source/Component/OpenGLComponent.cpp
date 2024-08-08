@@ -10,7 +10,6 @@
 
 #include <JuceHeader.h>
 #include "OpenGLComponent.h"
-#include "PluginEditor.h"
 
 //==============================================================================
 OpenGLComponent::OpenGLComponent()
