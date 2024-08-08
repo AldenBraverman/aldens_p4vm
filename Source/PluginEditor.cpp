@@ -30,8 +30,8 @@ void Aldens_p4vmAudioProcessorEditor::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    addAndMakeVisible(openGLComponent);
-    openGLComponent.setBounds(0, 0, 400, 300);
+    // addAndMakeVisible(openGLComponent);
+    // openGLComponent.setBounds(0, 0, 400, 300);
 }
 
 void Aldens_p4vmAudioProcessorEditor::resized()
@@ -44,6 +44,6 @@ void Aldens_p4vmAudioProcessorEditor::timerCallback()
 {
     // DBG("Timer Callback!");
     // timeFloat += 0.01f;
-    openGLComponent.openGLtimeFloat += 0.01f;
+    // openGLComponent.openGLtimeFloat += 0.01f;
     // DBG(timeFloat);
 }
