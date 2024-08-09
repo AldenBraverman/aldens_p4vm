@@ -27,7 +27,8 @@ namespace ParameterID
     #undef PARAMETER_ID
 }
 
-class Aldens_p4vmAudioProcessor  : public juce::AudioProcessor
+class Aldens_p4vmAudioProcessor  : public juce::AudioProcessor,
+                                   private juce::ValueTree::Listener
 {
 public:
     //==============================================================================
@@ -75,13 +76,24 @@ private:
     
     MidiHandler midiHandler;
     
-    juce::AudioParameterFloat* masterTransposeParam;
+    juce::AudioParameterChoice* masterTransposeParam;
     juce::AudioParameterFloat* voiceOneTransposeParam;
     juce::AudioParameterFloat* voiceTwoTransposeParam;
     juce::AudioParameterFloat* voiceThreeTransposeParam;
     juce::AudioParameterFloat* voiceFourTransposeParam;
     
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
+    
+    void valueTreePropertyChanged(juce::ValueTree&, const juce::Identifier&) override
+    {
+        // when the user or host changes a parameter, valueTreePropertyChanged sets the parametersChanged boolean to true
+        // DBG("parameter changed");
+        parametersChanged.store(true);
+    }
+    
+    std::atomic<bool> parametersChanged{ false };
+    
+    void update();
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Aldens_p4vmAudioProcessor)

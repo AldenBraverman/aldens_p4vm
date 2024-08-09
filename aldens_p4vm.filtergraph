@@ -31,7 +31,7 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
-  <FILTER uid="3" x="0.5" y="0.9" useARA="0">
+  <FILTER uid="3" x="0.355072463768116" y="0.865909090909091" useARA="0">
     <PLUGIN name="Audio Output" descriptiveName="" format="Internal" category="I/O devices"
             manufacturer="JUCE" version="1.0" file="" uniqueId="724248cb"
             isInstrument="0" fileTime="0" infoUpdateTime="0" numInputs="1"
@@ -46,7 +46,7 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
-  <FILTER uid="4" x="0.25" y="0.9" useARA="0">
+  <FILTER uid="4" x="0.5478260869565217" y="0.8795454545454545" useARA="0">
     <PLUGIN name="MIDI Output" descriptiveName="" format="Internal" category="I/O devices"
             manufacturer="JUCE" version="1.0" file="" uniqueId="9d5bbb00"
             isInstrument="0" fileTime="0" infoUpdateTime="0" numInputs="0"
@@ -63,17 +63,21 @@
   </FILTER>
   <FILTER uid="6" x="0.3826086956521739" y="0.5386363636363637" useARA="0"
           uiLastX_Normal="79" uiLastY_Normal="205" uiopen_Normal="0">
-    <PLUGIN name="aldens_p4vm" format="VST3" category="Fx" manufacturer="aldenbraverman"
-            version="1.0.0" file="/Users/aldenbraverman/Desktop/aldens_p4vm/aldens_p4vm/Builds/MacOSX/build/Debug/aldens_p4vm.vst3"
-            uniqueId="ffa5d917" isInstrument="0" fileTime="18fe1247464" infoUpdateTime="18fe12beb77"
-            numInputs="0" numOutputs="0" isShell="0" hasARAExtension="0"
+    <PLUGIN name="aldens_p4vm" format="VST3" category="Instrument|Synth"
+            manufacturer="aldenbraverman" version="1.0.0" file="/Users/aldenbraverman/Desktop/aldens_p4vm/aldens_p4vm/Builds/MacOSX/build/Debug/aldens_p4vm.vst3"
+            uniqueId="ffa5d917" isInstrument="1" fileTime="1912f71ff50" infoUpdateTime="1912f778395"
+            numInputs="0" numOutputs="2" isShell="0" hasARAExtension="0"
             uid="acfb1c6b"/>
     <STATE>191.VMjLgXK....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
     <LAYOUT>
       <INPUTS/>
-      <OUTPUTS/>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
     </LAYOUT>
   </FILTER>
   <CONNECTION srcFilter="2" srcChannel="4096" dstFilter="6" dstChannel="4096"/>
+  <CONNECTION srcFilter="6" srcChannel="0" dstFilter="3" dstChannel="0"/>
+  <CONNECTION srcFilter="6" srcChannel="1" dstFilter="3" dstChannel="1"/>
   <CONNECTION srcFilter="6" srcChannel="4096" dstFilter="4" dstChannel="4096"/>
 </FILTERGRAPH>

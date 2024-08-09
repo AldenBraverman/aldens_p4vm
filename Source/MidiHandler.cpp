@@ -45,14 +45,22 @@ void MidiHandler::noteOn(int note, int velocity)
     {
         voiceFourActive = true;
         voiceSum = 4;
-        DBG("MIDI Note "+juce::String(note)+"at Velocity "+juce::String(velocity)+" Assigned to Voice Four");
+        DBG("MIDI Note "+juce::String(note)+"at Velocity "+juce::String(velocity)+" Assigned to Voice Four"+'\n'+
+            "Adjust Master Pitch By: "+juce::String(adjustMasterPitch)+'\n'+
+            "Adjust Voice Pitch By: "+juce::String(adjustVoiceFourPitch)
+            
+        );
     }
     
     if(voiceOneActive && voiceTwoActive && !voiceThreeActive && !voiceFourActive && voiceSum == 2)
     {
         voiceThreeActive = true;
         voiceSum = 3;
-        DBG("MIDI Note "+juce::String(note)+"at Velocity "+juce::String(velocity)+" Assigned to Voice Three");
+        DBG("MIDI Note "+juce::String(note)+"at Velocity "+juce::String(velocity)+" Assigned to Voice Three"+'\n'+
+            "Adjust Master Pitch By: "+juce::String(adjustMasterPitch)+'\n'+
+            "Adjust Voice Pitch By: "+juce::String(adjustVoiceThreePitch)
+            
+        );
 
     }
     
@@ -60,7 +68,11 @@ void MidiHandler::noteOn(int note, int velocity)
     {
         voiceTwoActive = true;
         voiceSum = 2;
-        DBG("MIDI Note "+juce::String(note)+"at Velocity "+juce::String(velocity)+" Assigned to Voice Two");
+        DBG("MIDI Note "+juce::String(note)+"at Velocity "+juce::String(velocity)+" Assigned to Voice Two"+'\n'+
+            "Adjust Master Pitch By: "+juce::String(adjustMasterPitch)+'\n'+
+            "Adjust Voice Pitch By: "+juce::String(adjustVoiceTwoPitch)
+            
+        );
     }
     
     // DBG("Input - Note On! Note Number: "+juce::String(note)+", Note Velocity: "+juce::String(velocity));
@@ -68,7 +80,11 @@ void MidiHandler::noteOn(int note, int velocity)
     {
         voiceOneActive = true;
         voiceSum = 1;
-        DBG("MIDI Note "+juce::String(note)+"at Velocity "+juce::String(velocity)+" Assigned to Voice One");
+        DBG("MIDI Note "+juce::String(note)+"at Velocity "+juce::String(velocity)+" Assigned to Voice One"+'\n'+
+            "Adjust Master Pitch By: "+juce::String(adjustMasterPitch)+'\n'+
+            "Adjust Voice Pitch By: "+juce::String(adjustVoiceOnePitch)
+            
+        );
     }
 }
 

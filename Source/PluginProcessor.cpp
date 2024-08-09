@@ -8,6 +8,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "Utils.h"
 
 //==============================================================================
 Aldens_p4vmAudioProcessor::Aldens_p4vmAudioProcessor()
@@ -22,10 +23,18 @@ Aldens_p4vmAudioProcessor::Aldens_p4vmAudioProcessor()
                        )
 #endif
 {
+    castParameter(apvts, ParameterID::masterTranspose, masterTransposeParam);
+    castParameter(apvts, ParameterID::voiceOneTranspose, voiceOneTransposeParam);
+    castParameter(apvts, ParameterID::voiceTwoTranspose, voiceTwoTransposeParam);
+    castParameter(apvts, ParameterID::voiceThreeTranspose, voiceThreeTransposeParam);
+    castParameter(apvts, ParameterID::voiceFourTranspose, voiceFourTransposeParam);
+    
+    apvts.state.addListener(this);
 }
 
 Aldens_p4vmAudioProcessor::~Aldens_p4vmAudioProcessor()
 {
+    apvts.state.removeListener(this);
 }
 
 //==============================================================================
@@ -140,7 +149,21 @@ void Aldens_p4vmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
         buffer.clear(i, 0, buffer.getNumSamples());
     }
     
+    bool expected = true;
+    if(isNonRealtime() || parametersChanged.compare_exchange_strong(expected, false)) {
+        update();
+    }
+    
     splitBufferByEvents(buffer, midiMessages);
+}
+
+void Aldens_p4vmAudioProcessor::update()
+{
+    midiHandler.adjustMasterPitch = masterTransposeParam->getIndex();
+    midiHandler.adjustVoiceOnePitch = voiceOneTransposeParam->get();
+    midiHandler.adjustVoiceTwoPitch = voiceTwoTransposeParam->get();
+    midiHandler.adjustVoiceThreePitch = voiceThreeTransposeParam->get();
+    midiHandler.adjustVoiceFourPitch = voiceFourTransposeParam->get();
 }
 
 void Aldens_p4vmAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
@@ -171,7 +194,10 @@ bool Aldens_p4vmAudioProcessor::hasEditor() const
 
 juce::AudioProcessorEditor* Aldens_p4vmAudioProcessor::createEditor()
 {
-    return new Aldens_p4vmAudioProcessorEditor (*this);
+    // return new Aldens_p4vmAudioProcessorEditor (*this);
+    auto editor = new juce::GenericAudioProcessorEditor(*this);
+    editor->setSize(500, 300);
+    return editor;
 }
 
 //==============================================================================
@@ -189,7 +215,7 @@ void Aldens_p4vmAudioProcessor::setStateInformation (const void* data, int sizeI
 }
 
 juce::AudioProcessorValueTreeState::ParameterLayout
-Aldens_p4vmAudioProcessor::createParameterLayout()
+         Aldens_p4vmAudioProcessor::createParameterLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     
@@ -198,7 +224,7 @@ Aldens_p4vmAudioProcessor::createParameterLayout()
                                                             "Master Transpose",
                                                             juce::StringArray { "C", "C#/Db", "D", "D#/Eb", "E", "F",
                                                                                 "G", "G#,Ab", "A", "A#,Bb", "B" },
-                                                            0
+                                                            0.0f
                                                             ));
     
     layout.add(std::make_unique<juce::AudioParameterFloat>(
