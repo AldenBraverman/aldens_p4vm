@@ -1,0 +1,158 @@
+{
+  "main": {
+    "id": "b7a54da03e4c20dd",
+    "type": "split",
+    "children": [
+      {
+        "id": "8fb11f1b07e66e18",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "03e8d0874a742afe",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "ADC Mentorship.md",
+                "mode": "source",
+                "source": false
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "6bb687cc8d1ef6b6",
+    "type": "split",
+    "children": [
+      {
+        "id": "77c0237ccc4be04c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "118464e0a06da968",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "d595ef346a5924c4",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "e4e897a5d1af56bd",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "d7c0ff7ebc9c9ccb",
+    "type": "split",
+    "children": [
+      {
+        "id": "7aa63bc5a0d1d1dc",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "176ec29c6efe0934",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "ADC Mentorship.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "ef2df86ce73db259",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "ADC Mentorship.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "4fcdcbd90189352b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "c64afe220ac18193",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "ADC Mentorship.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "obsidian-kanban:Create new board": false
+    }
+  },
+  "active": "03e8d0874a742afe",
+  "lastOpenFiles": [
+    "Pasted image 20240812182938.png",
+    "ADC Mentorship.md",
+    "Untitled Kanban.md",
+    "2024-08-10.md",
+    "Welcome.md"
+  ]
+}
