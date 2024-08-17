@@ -28,22 +28,24 @@ private:
     void noteOn(int note, int velocity);
     void noteOff(int note);
     
-    bool voiceOneActive;
+    bool voiceOneActive = false;
     int voiceOneNote;
     int voiceOneVelocity;
     
-    bool voiceTwoActive;
+    bool voiceTwoActive = false;
     int voiceTwoNote;
     int voiceTwoVelocity;
     
-    bool voiceThreeActive;
+    bool voiceThreeActive = false;
     int voiceThreeNote;
     int voiceThreeVelocity;
     
-    bool voiceFourActive;
+    bool voiceFourActive = false;
     int voiceFourNote;
     int voiceFourVelocity;
     
-    float voiceSum;
+    float voiceSum = 0;
+
+    std::vector<int> noteVector = {0,0,0,0};
     
 };

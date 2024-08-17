@@ -71,13 +71,8 @@ Goals:
 		- struct VoiceState
 			- vector_bool **SEE IMPLEMENTATION**
 				- https://en.cppreference.com/w/cpp/container/vector_bool
-```
-// Function signature won't change 
-bool checkState (vectorbool voiceStates) 
-{ 
-	// Function implementation change according to vector size 
-}
-```
+	- "I have four bools I need to check in c++, how would I use a kmap to efficiently check the state of the bools"
+		- https://chatgpt.com/c/aee21d0b-8ad8-4c0a-93df-f76d4c636133
 - Data structure for transforming midi
 	- If I read in a midi note and need to check to see if it exists in a scale, and transform the note if needed, what is the most optimal way to do this?
 		- std::map to start (JUCE has a map)
