@@ -42,7 +42,7 @@ void MidiHandler::noteOn(int note, int velocity)
             voices[i] = true;  // Activate the voice
             // Trigger the note for this voice (implementation-specific)
             voiceNotes[i] = note;
-            playNoteOnVoice(i, note);
+            playNoteOnVoice(i, note, velocity);
             // updateState();  // Update the K-map state
             return;
         }
@@ -65,14 +65,21 @@ void MidiHandler::noteOff(int note)
 }
 
 // Functions to trigger note on/off for a specific voice (implementation-specific)
-void MidiHandler::playNoteOnVoice(int voice, int note) {
+void MidiHandler::playNoteOnVoice(int voice, int note, int velocity) {
     // Code to play the note on the specific voice
     DBG("Note "+juce::String(note)+" assigned to Voice "+juce::String(voice));
+    // auto msg = juce::MidiMessage::noteOn((int)1, (int)note+(int)adjustMasterPitch, (juce::uint8) velocity);
+    finalVoiceOnePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch;
+    finalVoiceOneVelocity = (juce::uint8)velocity;
+    // midiMessages.addEvent(msg, 0);
 }
 
 void MidiHandler::stopNoteOnVoice(int voice, int note) {
     // Code to stop the note on the specific voice
     DBG("Note "+juce::String(note)+" de-assigned to Voice "+juce::String(voice));
+    // auto msg = juce::MidiMessage::noteOff((int)1, (int)note+(int)adjustMasterPitch);
+    finalVoiceOnePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch;
+    // midiMessages.addEvent(msg, 0);
 }
 
 bool MidiHandler::isNoteOnVoice(int voice, int note) {

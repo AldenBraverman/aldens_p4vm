@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="RQgb6q" name="aldens_p4vm" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" jucerFormatVersion="1" companyName="aldenbraverman"
-              pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn"
+              pluginCharacteristicsValue="pluginIsMidiEffectPlugin,pluginProducesMidiOut,pluginWantsMidiIn"
               displaySplashScreen="1">
   <MAINGROUP id="oFv7uR" name="aldens_p4vm">
     <GROUP id="{E353D25B-7B60-9711-CEEB-5185D0C46BA6}" name="Source">

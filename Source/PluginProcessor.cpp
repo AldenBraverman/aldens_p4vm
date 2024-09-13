@@ -168,14 +168,38 @@ void Aldens_p4vmAudioProcessor::update()
 
 void Aldens_p4vmAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
 {
+    // midiMessages.clear();
+    juce::MidiBuffer processedMidi;
+    
     for (const auto metadata : midiMessages) {
         if(metadata.numBytes <= 3) {
             uint8_t data1 = (metadata.numBytes >= 2) ? metadata.data[1] : 0;
             uint8_t data2 = (metadata.numBytes == 3) ? metadata.data[2] : 0;
             handleMIDI(metadata.data[0], data1, data2);
         }
+        
+        auto message = metadata.getMessage();
+        const auto time = metadata.samplePosition;
+        
+        if (message.isNoteOn()) {
+            message = juce::MidiMessage::noteOn(
+                                                (int)1,
+                                                (int)midiHandler.finalVoiceOnePitch,
+                                                (juce::uint8)midiHandler.finalVoiceOneVelocity
+                                                );
+        }
+        // processedMidi.addEvent(message, time);
+        if (message.isNoteOff()) {
+            message = juce::MidiMessage::noteOff((int)1,
+                                                 (int)midiHandler.finalVoiceOnePitch
+                                                 );
+        }
+        processedMidi.addEvent(message, time);
+        
     }
-    midiMessages.clear();
+    midiMessages.swapWith(processedMidi);
+    // midiMessages.clear();
+    // juce::MidiBuffer processedMidi;
 }
 
 void Aldens_p4vmAudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)

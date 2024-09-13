@@ -24,11 +24,14 @@ public:
     float adjustVoiceThreePitch;
     float adjustVoiceFourPitch;
     
+    int finalVoiceOnePitch;
+    juce::uint8 finalVoiceOneVelocity;
+    
 private:
     void noteOn(int note, int velocity);
     void noteOff(int note);
     
-    void playNoteOnVoice(int voice, int note);
+    void playNoteOnVoice(int voice, int note, int velocity);
     void stopNoteOnVoice(int voice, int note);
     
     bool isNoteOnVoice(int voice, int note);
