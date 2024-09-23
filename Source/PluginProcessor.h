@@ -70,11 +70,42 @@ public:
 
     juce::AudioProcessorValueTreeState apvts { *this, nullptr, "Parameters", createParameterLayout() };
     
+    void midiMessage(uint8_t data0, uint8_t data1, uint8_t data2, juce::MidiBuffer& midiMessages);
+    
+    float adjustMasterPitch;
+    float adjustVoiceOnePitch;
+    float adjustVoiceTwoPitch;
+    float adjustVoiceThreePitch;
+    float adjustVoiceFourPitch;
+    
+    int finalVoiceOnePitch;
+    juce::uint8 finalVoiceOneVelocity;
+    
+    int finalVoiceTwoPitch;
+    juce::uint8 finalVoiceTwoVelocity;
+    
+    int finalVoiceThreePitch;
+    juce::uint8 finalVoiceThreeVelocity;
+    
+    int finalVoiceFourPitch;
+    juce::uint8 finalVoiceFourVelocity;
+    
+    bool isNoteOnVoice(int voice, int note);
+    
+    bool voices[4] = { false, false, false, false };
+    int voiceNotes[4] = { -1, -1, -1, -1 };
+    
 private:
     void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
-    void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2);
+    void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2, juce::MidiBuffer& midiMessages);
     
-    MidiHandler midiHandler;
+    void noteOn(int note, int velocity, juce::MidiBuffer& midiMessages);
+    void noteOff(int note, juce::MidiBuffer& midiMessages);
+    
+    void playNoteOnVoice(int voice, int note, int velocity, juce::MidiBuffer& midiMessages);
+    void stopNoteOnVoice(int voice, int note);
+    
+    // MidiHandler midiHandler;
     
     juce::AudioParameterChoice* masterTransposeParam;
     juce::AudioParameterFloat* voiceOneTransposeParam;

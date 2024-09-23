@@ -67,19 +67,47 @@ void MidiHandler::noteOff(int note)
 // Functions to trigger note on/off for a specific voice (implementation-specific)
 void MidiHandler::playNoteOnVoice(int voice, int note, int velocity) {
     // Code to play the note on the specific voice
-    DBG("Note "+juce::String(note)+" assigned to Voice "+juce::String(voice));
+    // DBG("Note "+juce::String(note)+" assigned to Voice "+juce::String(voice));
     // auto msg = juce::MidiMessage::noteOn((int)1, (int)note+(int)adjustMasterPitch, (juce::uint8) velocity);
-    finalVoiceOnePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch;
-    finalVoiceOneVelocity = (juce::uint8)velocity;
+    // finalVoiceOnePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch;
+    // finalVoiceOneVelocity = (juce::uint8)velocity;
     // midiMessages.addEvent(msg, 0);
+    switch (voice) {
+        case 0:
+            finalVoiceOnePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch;
+            finalVoiceOneVelocity = (juce::uint8)velocity;
+        case 1:
+            finalVoiceTwoPitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceTwoPitch;
+            finalVoiceTwoVelocity = (juce::uint8)velocity;
+        case 2:
+            finalVoiceThreePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceThreePitch;
+            finalVoiceThreeVelocity = (juce::uint8)velocity;
+        case 3:
+            finalVoiceFourPitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceFourPitch;
+            finalVoiceFourVelocity = (juce::uint8)velocity;
+    }
 }
 
 void MidiHandler::stopNoteOnVoice(int voice, int note) {
     // Code to stop the note on the specific voice
-    DBG("Note "+juce::String(note)+" de-assigned to Voice "+juce::String(voice));
+    // DBG("Note "+juce::String(note)+" de-assigned to Voice "+juce::String(voice));
     // auto msg = juce::MidiMessage::noteOff((int)1, (int)note+(int)adjustMasterPitch);
-    finalVoiceOnePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch;
+    // finalVoiceOnePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch;
     // midiMessages.addEvent(msg, 0);
+    switch (voice) {
+        case 0:
+            finalVoiceOnePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch;
+            // finalVoiceOneVelocity = (juce::uint8)velocity;
+        case 1:
+            finalVoiceTwoPitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceTwoPitch;
+            // finalVoiceTwoVelocity = (juce::uint8)velocity;
+        case 2:
+            finalVoiceThreePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceThreePitch;
+            // finalVoiceThreeVelocity = (juce::uint8)velocity;
+        case 3:
+            finalVoiceFourPitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceFourPitch;
+            // finalVoiceFourVelocity = (juce::uint8)velocity;
+    }
 }
 
 bool MidiHandler::isNoteOnVoice(int voice, int note) {

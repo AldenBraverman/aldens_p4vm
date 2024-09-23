@@ -27,6 +27,20 @@ public:
     int finalVoiceOnePitch;
     juce::uint8 finalVoiceOneVelocity;
     
+    int finalVoiceTwoPitch;
+    juce::uint8 finalVoiceTwoVelocity;
+    
+    int finalVoiceThreePitch;
+    juce::uint8 finalVoiceThreeVelocity;
+    
+    int finalVoiceFourPitch;
+    juce::uint8 finalVoiceFourVelocity;
+    
+    bool isNoteOnVoice(int voice, int note);
+    
+    bool voices[4] = { false, false, false, false };
+    int voiceNotes[4] = { -1, -1, -1, -1 };
+    
 private:
     void noteOn(int note, int velocity);
     void noteOff(int note);
@@ -34,8 +48,8 @@ private:
     void playNoteOnVoice(int voice, int note, int velocity);
     void stopNoteOnVoice(int voice, int note);
     
-    bool isNoteOnVoice(int voice, int note);
+    // bool isNoteOnVoice(int voice, int note);
     
-    bool voices[4] = { false, false, false, false };
-    int voiceNotes[4] = { -1, -1, -1, -1 };
+    // bool voices[4] = { false, false, false, false };
+    // int voiceNotes[4] = { -1, -1, -1, -1 };
 };
