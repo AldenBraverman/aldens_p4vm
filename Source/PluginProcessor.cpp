@@ -166,18 +166,18 @@ void Aldens_p4vmAudioProcessor::update()
     midiHandler.adjustVoiceFourPitch = voiceFourTransposeParam->get();
 }
 
-void Aldens_p4vmAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
+void Aldens_p4vmAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     // midiMessages.clear();
-    juce::MidiBuffer processedMidi;
+    // juce::MidiBuffer processedMidi;
     
     for (const auto metadata : midiMessages) {
         if(metadata.numBytes <= 3) {
             uint8_t data1 = (metadata.numBytes >= 2) ? metadata.data[1] : 0;
             uint8_t data2 = (metadata.numBytes == 3) ? metadata.data[2] : 0;
-            handleMIDI(metadata.data[0], data1, data2);
+            handleMIDI(metadata.data[0], data1, data2, midiMessages, metadata.samplePosition);
         }
-        
+        /*
         auto message = metadata.getMessage();
         const auto time = metadata.samplePosition;
         
@@ -195,19 +195,20 @@ void Aldens_p4vmAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float> &bu
                                                  );
         }
         processedMidi.addEvent(message, time);
+        */
         
     }
-    midiMessages.swapWith(processedMidi);
-    // midiMessages.clear();
+    // midiMessages.swapWith(processedMidi);
+    midiMessages.clear();
     // juce::MidiBuffer processedMidi;
 }
 
-void Aldens_p4vmAudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2)
+void Aldens_p4vmAudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2, juce::MidiBuffer& midiMessages, int timestamp)
 {
     // char s[16];
     // snprintf(s, 16, "%02hhX %02hhX %02hhX", data0, data1, data2);
     // DBG(s);
-    midiHandler.midiMessage(data0, data1, data2);
+    midiHandler.midiMessage(data0, data1, data2, midiMessages, timestamp);
 }
 
 //==============================================================================

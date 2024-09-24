@@ -72,7 +72,7 @@ public:
     
 private:
     void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
-    void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2);
+    void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2, juce::MidiBuffer& midiMessages, int timestamp);
     
     MidiHandler midiHandler;
     
