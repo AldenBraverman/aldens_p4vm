@@ -11,11 +11,13 @@
 #include "MidiHandler.h"
 MidiHandler::MidiHandler()
 {
-
+    // processedMidi = juce::MidiBuffer();
 }
 
 void MidiHandler::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2, juce::MidiBuffer& midiMessages, int timestamp)
 {
+    processedMidi.clear();
+    
     switch (data0 & 0xF0) {
         // Note Off
         case 0x80:
@@ -33,6 +35,8 @@ void MidiHandler::midiMessage(uint8_t data0, uint8_t data1, uint8_t data2, juce:
             }
             break;
     }
+    
+    midiMessages.swapWith(processedMidi);
 }
 
 void MidiHandler::noteOn(int note, int velocity, juce::MidiBuffer& midiMessages, int timestamp)
@@ -72,28 +76,61 @@ void MidiHandler::playNoteOnVoice(int voice, int note, int velocity, juce::MidiB
     // finalVoiceOnePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch;
     // finalVoiceOneVelocity = (juce::uint8)velocity;
     // midiMessages.addEvent(msg, 0);
-    auto msg = juce::MidiMessage();
+    // juce::MidiBuffer processedMidi;
+    juce::MidiMessage msg;
     
     switch (voice) {
         case 0:
-            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch)+" assigned to Voice 1");
+            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch)+" assigned to Voice 1 at timestamp: "+juce::String(timestamp));
             msg = juce::MidiMessage::noteOn((int)1, (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch, (juce::uint8) velocity);
-            // midiMessages.addEvent(msg, timestamp);
+            // midiMessages.addEvent(msg, timestamp*44100);
+            processedMidi.addEvent(msg, timestamp);
+            // midiMessages.swapWith(processedMidi);
             break;
         case 1:
-            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceTwoPitch)+" assigned to Voice 2");
+            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceTwoPitch)+" assigned to Voice 2 at timestamp: "+juce::String(timestamp));
             msg = juce::MidiMessage::noteOn((int)1, (int)note+(int)adjustMasterPitch+(int)adjustVoiceTwoPitch, (juce::uint8) velocity);
             // midiMessages.addEvent(msg, timestamp);
+            processedMidi.addEvent(msg, timestamp);
+            // midiMessages.swapWith(processedMidi);
             break;
         case 2:
-            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceThreePitch)+" assigned to Voice 3");
+            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceThreePitch)+" assigned to Voice 3 at timestamp: "+juce::String(timestamp));
             msg = juce::MidiMessage::noteOn((int)1, (int)note+(int)adjustMasterPitch+(int)adjustVoiceThreePitch, (juce::uint8) velocity);
             // midiMessages.addEvent(msg, timestamp);
+            processedMidi.addEvent(msg, timestamp);
+            // midiMessages.swapWith(processedMidi);
             break;
         case 3:
-            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceFourPitch)+" assigned to Voice 4");
+            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceFourPitch)+" assigned to Voice 4 at timestamp: "+juce::String(timestamp));
             msg = juce::MidiMessage::noteOn((int)1, (int)note+(int)adjustMasterPitch+(int)adjustVoiceFourPitch, (juce::uint8) velocity);
             // midiMessages.addEvent(msg, timestamp);
+            processedMidi.addEvent(msg, timestamp);
+            // midiMessages.swapWith(processedMidi);
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
+        case 10:
+            break;
+        case 11:
+            break;
+        case 12:
+            break;
+        case 13:
+            break;
+        case 14:
+            break;
+        case 15:
             break;
             
         //default:
@@ -107,32 +144,65 @@ void MidiHandler::stopNoteOnVoice(int voice, int note, juce::MidiBuffer& midiMes
     // auto msg = juce::MidiMessage::noteOff((int)1, (int)note+(int)adjustMasterPitch);
     // finalVoiceOnePitch = (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch;
     // midiMessages.addEvent(msg, 0);
-    auto msg = juce::MidiMessage();
+    // juce::MidiBuffer processedMidi;
+    juce::MidiMessage msg;
     
     switch (voice) {
         case 0:
-            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch)+" de-assigned to Voice 1");
+            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch)+" de-assigned to Voice 1 at timestamp: "+juce::String(timestamp));
             msg = juce::MidiMessage::noteOff((int)1, (int)note+(int)adjustMasterPitch+(int)adjustVoiceOnePitch);
             // midiMessages.addEvent(msg, timestamp);
+            processedMidi.addEvent(msg, timestamp);
+            // midiMessages.swapWith(processedMidi);
             break;
         case 1:
-            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceTwoPitch)+" de-assigned to Voice 2");
+            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceTwoPitch)+" de-assigned to Voice 2 at timestamp: "+juce::String(timestamp));
             msg = juce::MidiMessage::noteOff((int)1, (int)note+(int)adjustMasterPitch+(int)adjustVoiceTwoPitch);
             // midiMessages.addEvent(msg, timestamp);
+            processedMidi.addEvent(msg, timestamp);
+            // midiMessages.swapWith(processedMidi);
             break;
         case 2:
-            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceThreePitch)+" de-assigned to Voice 3");
+            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceThreePitch)+" de-assigned to Voice 3 at timestamp: "+juce::String(timestamp));
             msg = juce::MidiMessage::noteOff((int)1, (int)note+(int)adjustMasterPitch+(int)adjustVoiceThreePitch);
             // midiMessages.addEvent(msg, timestamp);
+            processedMidi.addEvent(msg, timestamp);
+            // midiMessages.swapWith(processedMidi);
             break;
         case 3:
-            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceFourPitch)+" de-assigned to Voice 4");
+            DBG("Note "+juce::String((int)note+(int)adjustMasterPitch+(int)adjustVoiceFourPitch)+" de-assigned to Voice 4 at timestamp: "+juce::String(timestamp));
             msg = juce::MidiMessage::noteOff((int)1, (int)note+(int)adjustMasterPitch+(int)adjustVoiceFourPitch);
             // midiMessages.addEvent(msg, timestamp);
+            processedMidi.addEvent(msg, timestamp);
+            // midiMessages.swapWith(processedMidi);
             break;
             
             //default:
             //    break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
+        case 10:
+            break;
+        case 11:
+            break;
+        case 12:
+            break;
+        case 13:
+            break;
+        case 14:
+            break;
+        case 15:
+            break;
     }
 }
 

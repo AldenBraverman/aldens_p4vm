@@ -152,6 +152,10 @@ void Aldens_p4vmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     bool expected = true;
     if(isNonRealtime() || parametersChanged.compare_exchange_strong(expected, false)) {
         update();
+        
+        parameterUpdateMidiBuffer.addEvent(juce::MidiMessage::allNotesOff(1), 0);
+        
+        midiMessages.swapWith(parameterUpdateMidiBuffer);
     }
     
     splitBufferByEvents(buffer, midiMessages);
@@ -164,19 +168,27 @@ void Aldens_p4vmAudioProcessor::update()
     midiHandler.adjustVoiceTwoPitch = voiceTwoTransposeParam->get();
     midiHandler.adjustVoiceThreePitch = voiceThreeTransposeParam->get();
     midiHandler.adjustVoiceFourPitch = voiceFourTransposeParam->get();
+    
+    midiProcessor.adjustMasterPitch = masterTransposeParam->getIndex();
 }
 
 void Aldens_p4vmAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    buffer.clear();
     // midiMessages.clear();
     // juce::MidiBuffer processedMidi;
     
+    // Simple forwarding
+    midiProcessor.process(midiMessages);
+    
+    /*
     for (const auto metadata : midiMessages) {
         if(metadata.numBytes <= 3) {
             uint8_t data1 = (metadata.numBytes >= 2) ? metadata.data[1] : 0;
             uint8_t data2 = (metadata.numBytes == 3) ? metadata.data[2] : 0;
             handleMIDI(metadata.data[0], data1, data2, midiMessages, metadata.samplePosition);
         }
+     */
         /*
         auto message = metadata.getMessage();
         const auto time = metadata.samplePosition;
@@ -197,9 +209,9 @@ void Aldens_p4vmAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& bu
         processedMidi.addEvent(message, time);
         */
         
-    }
+    //}
     // midiMessages.swapWith(processedMidi);
-    midiMessages.clear();
+    // midiMessages.clear();
     // juce::MidiBuffer processedMidi;
 }
 

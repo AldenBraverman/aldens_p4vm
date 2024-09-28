@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 #include "MidiHandler.h"
+#include "MidiHandler_Two.h"
 
 //==============================================================================
 /**
@@ -94,6 +95,10 @@ private:
     std::atomic<bool> parametersChanged{ false };
     
     void update();
+    
+    MidiProcessor midiProcessor;
+    
+    juce::MidiBuffer parameterUpdateMidiBuffer;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Aldens_p4vmAudioProcessor)

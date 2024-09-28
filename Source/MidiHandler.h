@@ -24,10 +24,10 @@ public:
     float adjustVoiceThreePitch;
     float adjustVoiceFourPitch;
     
-    int finalVoiceOnePitch;
-    juce::uint8 finalVoiceOneVelocity;
+    // int finalVoiceOnePitch;
+    // juce::uint8 finalVoiceOneVelocity;
     
-    bool voices[4] = { false, false, false, false };
+    // bool voices[4] = { false, false, false, false };
     
 private:
     void noteOn(int note, int velocity, juce::MidiBuffer& midiMessages, int timestamp);
@@ -38,6 +38,15 @@ private:
     
     bool isNoteOnVoice(int voice, int note);
     
-    // bool voices[4] = { false, false, false, false };
-    int voiceNotes[4] = { -1, -1, -1, -1 };
+    bool voices[16] = { false, false, false, false,
+                        false, false, false, false,
+                        false, false, false, false,
+                        false, false, false, false };
+    
+    int voiceNotes[16] = { -1, -1, -1, -1,
+                           -1, -1, -1, -1,
+                           -1, -1, -1, -1,
+                           -1, -1, -1, -1 };
+    
+    juce::MidiBuffer processedMidi;
 };
