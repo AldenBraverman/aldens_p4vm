@@ -170,6 +170,10 @@ void Aldens_p4vmAudioProcessor::update()
     midiHandler.adjustVoiceFourPitch = voiceFourTransposeParam->get();
     
     midiProcessor.adjustMasterPitch = masterTransposeParam->getIndex();
+    midiProcessor.adjustVoiceOnePitch = voiceOneTransposeParam->get();
+    midiProcessor.adjustVoiceTwoPitch = voiceTwoTransposeParam->get();
+    midiProcessor.adjustVoiceThreePitch = voiceThreeTransposeParam->get();
+    midiProcessor.adjustVoiceFourPitch = voiceFourTransposeParam->get();
 }
 
 void Aldens_p4vmAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
