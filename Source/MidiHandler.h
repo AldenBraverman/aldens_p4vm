@@ -16,7 +16,18 @@ class MidiHandler
 {
 public:
     MidiHandler();
-    void midiMessage(uint8_t data0, uint8_t data1, uint8_t data2);
+    void midiMessage(uint8_t data0, uint8_t data1, uint8_t data2, juce::MidiBuffer& midiMessages, int timestamp);
+    
+    float adjustMasterPitch;
+    float adjustVoiceOnePitch;
+    float adjustVoiceTwoPitch;
+    float adjustVoiceThreePitch;
+    float adjustVoiceFourPitch;
+    
+    // int finalVoiceOnePitch;
+    // juce::uint8 finalVoiceOneVelocity;
+    
+    // bool voices[4] = { false, false, false, false };
     
     float masterTranspose;
     float voiceOneTranspose;
@@ -25,25 +36,23 @@ public:
     float voiceFourTranspose;
     
 private:
-    void noteOn(int note, int velocity);
-    void noteOff(int note);
+    void noteOn(int note, int velocity, juce::MidiBuffer& midiMessages, int timestamp);
+    void noteOff(int note, juce::MidiBuffer& midiMessages, int timestamp);
     
-    bool voiceOneActive;
-    int voiceOneNote;
-    int voiceOneVelocity;
+    void playNoteOnVoice(int voice, int note, int velocity, juce::MidiBuffer& midiMessages, int timestamp);
+    void stopNoteOnVoice(int voice, int note, juce::MidiBuffer& midiMessages, int timestamp);
     
-    bool voiceTwoActive;
-    int voiceTwoNote;
-    int voiceTwoVelocity;
+    bool isNoteOnVoice(int voice, int note);
     
-    bool voiceThreeActive;
-    int voiceThreeNote;
-    int voiceThreeVelocity;
+    bool voices[16] = { false, false, false, false,
+                        false, false, false, false,
+                        false, false, false, false,
+                        false, false, false, false };
     
-    bool voiceFourActive;
-    int voiceFourNote;
-    int voiceFourVelocity;
+    int voiceNotes[16] = { -1, -1, -1, -1,
+                           -1, -1, -1, -1,
+                           -1, -1, -1, -1,
+                           -1, -1, -1, -1 };
     
-    float voiceSum;
-    
+    juce::MidiBuffer processedMidi;
 };

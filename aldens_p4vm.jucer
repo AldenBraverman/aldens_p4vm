@@ -6,15 +6,11 @@
               displaySplashScreen="1">
   <MAINGROUP id="oFv7uR" name="aldens_p4vm">
     <GROUP id="{E353D25B-7B60-9711-CEEB-5185D0C46BA6}" name="Source">
+      <FILE id="Makg8T" name="MidiHandler_Two.h" compile="0" resource="0"
+            file="Source/MidiHandler_Two.h"/>
       <FILE id="Uppjnq" name="Utils.h" compile="0" resource="0" file="Source/Utils.h"/>
       <FILE id="VVexig" name="MidiHandler.cpp" compile="1" resource="0" file="Source/MidiHandler.cpp"/>
       <FILE id="KRwrFp" name="MidiHandler.h" compile="0" resource="0" file="Source/MidiHandler.h"/>
-      <GROUP id="{E71F16CD-8D20-243A-F4CC-98C5DFA841E4}" name="Component">
-        <FILE id="FadNFx" name="OpenGLComponent.cpp" compile="1" resource="0"
-              file="Source/Component/OpenGLComponent.cpp"/>
-        <FILE id="LgxRQy" name="OpenGLComponent.h" compile="0" resource="0"
-              file="Source/Component/OpenGLComponent.h"/>
-      </GROUP>
       <FILE id="rKkDV8" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="d32O7t" name="PluginProcessor.h" compile="0" resource="0"

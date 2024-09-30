@@ -10,7 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-#include "Component/OpenGLComponent.h"
+// #include "Component/OpenGLComponent.h"
 
 //==============================================================================
 /**
@@ -30,7 +30,7 @@ private:
     // access the processor object that created it.
     Aldens_p4vmAudioProcessor& audioProcessor;
     
-    OpenGLComponent openGLComponent;
+    // OpenGLComponent openGLComponent;
     
     void timerCallback() final;
     
