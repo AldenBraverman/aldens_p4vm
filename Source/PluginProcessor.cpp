@@ -24,10 +24,44 @@ Aldens_p4vmAudioProcessor::Aldens_p4vmAudioProcessor()
 #endif
 {
     castParameter(apvts, ParameterID::masterTranspose, masterTransposeParam);
+    
     castParameter(apvts, ParameterID::voiceOneTranspose, voiceOneTransposeParam);
     castParameter(apvts, ParameterID::voiceTwoTranspose, voiceTwoTransposeParam);
     castParameter(apvts, ParameterID::voiceThreeTranspose, voiceThreeTransposeParam);
     castParameter(apvts, ParameterID::voiceFourTranspose, voiceFourTransposeParam);
+    castParameter(apvts, ParameterID::voiceFiveTranspose, voiceFiveTransposeParam);
+    castParameter(apvts, ParameterID::voiceSixTranspose, voiceSixTransposeParam);
+    castParameter(apvts, ParameterID::voiceSevenTranspose, voiceSevenTransposeParam);
+    castParameter(apvts, ParameterID::voiceEightTranspose, voiceEightTransposeParam);
+    castParameter(apvts, ParameterID::voiceNineTranspose, voiceNineTransposeParam);
+    castParameter(apvts, ParameterID::voiceTenTranspose, voiceTenTransposeParam);
+    castParameter(apvts, ParameterID::voiceElevenTranspose, voiceElevenTransposeParam);
+    castParameter(apvts, ParameterID::voiceTwelveTranspose, voiceTwelveTransposeParam);
+    castParameter(apvts, ParameterID::voiceThirteenTranspose, voiceThirteenTransposeParam);
+    castParameter(apvts, ParameterID::voiceFourteenTranspose, voiceFourteenTransposeParam);
+    castParameter(apvts, ParameterID::voiceFifteenTranspose, voiceFifteenTransposeParam);
+    castParameter(apvts, ParameterID::voiceSixteenTranspose, voiceSixteenTransposeParam);
+    
+    /*
+    castParameter(apvts, ParameterID::voiceOneMidiChannel, voiceOneMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceTwoMidiChannel, voiceTwoMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceThreeMidiChannel, voiceThreeMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceFourMidiChannel, voiceFourMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceFiveMidiChannel, voiceFiveMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceSixMidiChannel, voiceSixMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceSevenMidiChannel, voiceSevenMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceEightMidiChannel, voiceEightMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceNineMidiChannel, voiceNineMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceTenMidiChannel, voiceTenMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceElevenMidiChannel, voiceElevenMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceTwelveMidiChannel, voiceTwelveMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceThirteenMidiChannel, voiceThirteenMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceFourteenMidiChannel, voiceFourteenMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceFifteenMidiChannel, voiceFifteenMidiChannelParam);
+    castParameter(apvts, ParameterID::voiceSixteenMidiChannel, voiceSixteenMidiChannelParam);
+    */
+
+
     
     apvts.state.addListener(this);
 }
@@ -153,9 +187,9 @@ void Aldens_p4vmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
     if(isNonRealtime() || parametersChanged.compare_exchange_strong(expected, false)) {
         update();
         
-        parameterUpdateMidiBuffer.addEvent(juce::MidiMessage::allNotesOff(1), 0);
+        // parameterUpdateMidiBuffer.addEvent(juce::MidiMessage::allNotesOff(1), 0);
         
-        midiMessages.swapWith(parameterUpdateMidiBuffer);
+        // midiMessages.swapWith(parameterUpdateMidiBuffer);
     }
     
     splitBufferByEvents(buffer, midiMessages);
@@ -163,17 +197,50 @@ void Aldens_p4vmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
 
 void Aldens_p4vmAudioProcessor::update()
 {
-    midiHandler.adjustMasterPitch = masterTransposeParam->getIndex();
-    midiHandler.adjustVoiceOnePitch = voiceOneTransposeParam->get();
-    midiHandler.adjustVoiceTwoPitch = voiceTwoTransposeParam->get();
-    midiHandler.adjustVoiceThreePitch = voiceThreeTransposeParam->get();
-    midiHandler.adjustVoiceFourPitch = voiceFourTransposeParam->get();
+    //midiHandler.adjustMasterPitch = masterTransposeParam->getIndex();
+    //midiHandler.adjustVoiceOnePitch = voiceOneTransposeParam->get();
+    //midiHandler.adjustVoiceTwoPitch = voiceTwoTransposeParam->get();
+    //midiHandler.adjustVoiceThreePitch = voiceThreeTransposeParam->get();
+    //midiHandler.adjustVoiceFourPitch = voiceFourTransposeParam->get();
     
     midiProcessor.adjustMasterPitch = masterTransposeParam->getIndex();
+    
     midiProcessor.adjustVoiceOnePitch = voiceOneTransposeParam->get();
     midiProcessor.adjustVoiceTwoPitch = voiceTwoTransposeParam->get();
     midiProcessor.adjustVoiceThreePitch = voiceThreeTransposeParam->get();
     midiProcessor.adjustVoiceFourPitch = voiceFourTransposeParam->get();
+    midiProcessor.adjustVoiceFivePitch = voiceFiveTransposeParam->get();
+    midiProcessor.adjustVoiceSixPitch = voiceSixTransposeParam->get();
+    midiProcessor.adjustVoiceSevenPitch = voiceSevenTransposeParam->get();
+    midiProcessor.adjustVoiceEightPitch = voiceEightTransposeParam->get();
+    midiProcessor.adjustVoiceNinePitch = voiceOneTransposeParam->get();
+    midiProcessor.adjustVoiceTenPitch = voiceTwoTransposeParam->get();
+    midiProcessor.adjustVoiceElevenPitch = voiceThreeTransposeParam->get();
+    midiProcessor.adjustVoiceTwelvePitch = voiceFourTransposeParam->get();
+    midiProcessor.adjustVoiceThirteenPitch = voiceFiveTransposeParam->get();
+    midiProcessor.adjustVoiceFourteenPitch = voiceSixTransposeParam->get();
+    midiProcessor.adjustVoiceFifteenPitch = voiceSevenTransposeParam->get();
+    midiProcessor.adjustVoiceSixteenPitch = voiceEightTransposeParam->get();
+    
+    /*
+    midiProcessor.assignVoiceOneMidiChannel = 1.0f + voiceOneMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceTwoMidiChannel = 1.0f + voiceTwoMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceThreeMidiChannel = 1.0f + voiceThreeMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceFourMidiChannel = 1.0f + voiceFourMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceFiveMidiChannel = 1.0f + voiceFiveMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceSixMidiChannel = 1.0f + voiceSixMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceSevenMidiChannel = 1.0f + voiceSevenMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceEightMidiChannel = 1.0f + voiceEightMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceNineMidiChannel = 1.0f + voiceNineMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceTenMidiChannel = 1.0f + voiceTenMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceElevenMidiChannel = 1.0f + voiceElevenMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceTwelveMidiChannel = 1.0f + voiceTwelveMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceThirteenMidiChannel = 1.0f + voiceThirteenMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceFourteenMidiChannel = 1.0f + voiceFourteenMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceFifteenMidiChannel = 1.0f + voiceFifteenMidiChannelParam->getIndex();
+    midiProcessor.assignVoiceSixteenMidiChannel = 1.0f + voiceSixteenMidiChannelParam->getIndex();
+    */
+
 }
 
 void Aldens_p4vmAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
@@ -224,7 +291,7 @@ void Aldens_p4vmAudioProcessor::handleMIDI(uint8_t data0, uint8_t data1, uint8_t
     // char s[16];
     // snprintf(s, 16, "%02hhX %02hhX %02hhX", data0, data1, data2);
     // DBG(s);
-    midiHandler.midiMessage(data0, data1, data2, midiMessages, timestamp);
+    // midiHandler.midiMessage(data0, data1, data2, midiMessages, timestamp);
 }
 
 //==============================================================================
@@ -295,7 +362,201 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                            0.0f
                                                            ));
-    
+     layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::voiceFiveTranspose,
+                                                            "Voice Five Transpose",
+                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                            0.0f
+                                                            ));
+     
+     layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::voiceSixTranspose,
+                                                            "Voice Six Transpose",
+                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                            0.0f
+                                                            ));
+     
+     layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::voiceSevenTranspose,
+                                                            "Voice Seven Transpose",
+                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                            0.0f
+                                                            ));
+     
+     layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::voiceEightTranspose,
+                                                            "Voice Eight Transpose",
+                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                            0.0f
+                                                            ));
+     layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::voiceNineTranspose,
+                                                            "Voice Nine Transpose",
+                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                            0.0f
+                                                            ));
+     
+     layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::voiceTenTranspose,
+                                                            "Voice Ten Transpose",
+                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                            0.0f
+                                                            ));
+     
+     layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::voiceElevenTranspose,
+                                                            "Voice Eleven Transpose",
+                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                            0.0f
+                                                            ));
+     
+     layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::voiceTwelveTranspose,
+                                                            "Voice Twelve Transpose",
+                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                            0.0f
+                                                            ));
+      layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                             ParameterID::voiceThirteenTranspose,
+                                                             "Voice Thirteen Transpose",
+                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                             0.0f
+                                                             ));
+      
+      layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                             ParameterID::voiceFourteenTranspose,
+                                                             "Voice Fourteen Transpose",
+                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                             0.0f
+                                                             ));
+      
+      layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                             ParameterID::voiceFifteenTranspose,
+                                                             "Voice Fifteen Transpose",
+                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                             0.0f
+                                                             ));
+      
+      layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                             ParameterID::voiceSixteenTranspose,
+                                                             "Voice Sixteen Transpose",
+                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
+                                                             0.0f
+                                                             ));
+     /*
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceOneMidiChannel,
+         "Voice One Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceTwoMidiChannel,
+         "Voice Two Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceThreeMidiChannel,
+         "Voice Three Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceFourMidiChannel,
+         "Voice Four Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceFiveMidiChannel,
+         "Voice Five Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceSixMidiChannel,
+         "Voice Six Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceSevenMidiChannel,
+         "Voice Seven Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceEightMidiChannel,
+         "Voice Eight Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceNineMidiChannel,
+         "Voice Nine Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+             
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceTenMidiChannel,
+         "Voice Ten Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+             
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceElevenMidiChannel,
+         "Voice Eleven Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceTwelveMidiChannel,
+         "Voice Twelve Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceThirteenMidiChannel,
+         "Voice Thirteen Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceFourteenMidiChannel,
+         "Voice Fourteen Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceFifteenMidiChannel,
+         "Voice Fifteen Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+
+     layout.add(std::make_unique<juce::AudioParameterChoice>(
+         ParameterID::voiceSixteenMidiChannel,
+         "Voice Sixteen Midi Channel",
+         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
+         0.0f
+     ));
+    */
+
     return layout;
 }
 

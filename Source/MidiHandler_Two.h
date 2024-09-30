@@ -11,30 +11,22 @@
 #pragma once
 /**
  https://www.youtube.com/watch?v=tgf6J8foCiw
- Call buffer.clear() in the process block
- 
  */
 
 #include <JuceHeader.h>
 
-constexpr int interval = 4;
-constexpr int MAX_VOICES = 4;
+// constexpr int interval = 4;
+constexpr int MAX_VOICES = 16;
 
+/*
 inline const char * const BoolToString(bool b)
 {
   return b ? "true" : "false";
 }
-
+*/
 class MidiProcessor
 {
 public:
-    /**
-    1 function, takes midi buffer by reference
-     Use reference, not copy - host provides chunk, asks plugin to do manipulations
-     Midi still goes through plugin
-     Host expects the memory to be modified (host provides the memory)
-    */
-    
     void process(juce::MidiBuffer& midiMessages)
     {
         processedBuffer.clear();
@@ -89,12 +81,12 @@ public:
         {
             if (currentMessage.isNoteOnOrOff())
             {
-                DBG("New Note On/Off -"+currentMessage.getDescription());
+                // DBG("New Note On/Off -"+currentMessage.getDescription());
                 if (currentMessage.isNoteOn())
                 {
                     // DBG("Note On Message on Note "+juce::String(currentMessage.getNoteNumber()));
                     for (int v=0; v < MAX_VOICES; v++) {
-                        DBG(juce::String(v)+" "+BoolToString(voices[v]));
+                        // DBG(juce::String(v)+" "+BoolToString(voices[v]));
                         if (!voices[v]) { // Find First Inactive Voice
                             // DBG(juce::String(v)+" is the first inactive voice");
                             voices[v] = true; // Activate Voice
@@ -110,7 +102,7 @@ public:
                 {
                     // DBG("Note Off Message on Note "+juce::String(currentMessage.getNoteNumber()));
                     for (int v=0; v < MAX_VOICES; v++) {
-                        DBG(juce::String(v)+" "+BoolToString(voices[v])+" "+BoolToString(myIsNoteOnVoice(v, currentMessage.getNoteNumber())));
+                        // DBG(juce::String(v)+" "+BoolToString(voices[v])+" "+BoolToString(myIsNoteOnVoice(v, currentMessage.getNoteNumber())));
                         if (voices[v] && myIsNoteOnVoice(v, currentMessage.getNoteNumber())) {
                             // DBG(juce::String(v)+" is the voice to be deactivated");
                             voices[v] = false;
@@ -134,6 +126,7 @@ public:
                 // voice 1
                 // auto oldNoteNum = messageToTranspose.getNoteNumber();
                 messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceOnePitch);
+                messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
                 
                 processedBuffer.addEvent(messageToTranspose, samplePos);
                 break;
@@ -141,6 +134,7 @@ public:
             case 1:
                 // voice 2
                 messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwoPitch);
+                messageToTranspose.setChannel((int)assignVoiceTwoMidiChannel);
                 
                 processedBuffer.addEvent(messageToTranspose, samplePos);
                 break;
@@ -148,6 +142,7 @@ public:
             case 2:
                 // voice 3
                 messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThreePitch);
+                messageToTranspose.setChannel((int)assignVoiceThreeMidiChannel);
                 
                 processedBuffer.addEvent(messageToTranspose, samplePos);
                 break;
@@ -155,6 +150,106 @@ public:
             case 3:
                 // voice 4
                 messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourPitch);
+                messageToTranspose.setChannel((int)assignVoiceFourMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 4:
+                // voice 5
+                // auto oldNoteNum = messageToTranspose.getNoteNumber();
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFivePitch);
+                messageToTranspose.setChannel((int)assignVoiceFiveMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 5:
+                // voice 6
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixPitch);
+                messageToTranspose.setChannel((int)assignVoiceSixMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 6:
+                // voice 7
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSevenPitch);
+                messageToTranspose.setChannel((int)assignVoiceSevenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 7:
+                // voice 8
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceEightPitch);
+                messageToTranspose.setChannel((int)assignVoiceEightMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 8:
+                // voice 9
+                // auto oldNoteNum = messageToTranspose.getNoteNumber();
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceNinePitch);
+                messageToTranspose.setChannel((int)assignVoiceNineMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 9:
+                // voice 10
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTenPitch);
+                messageToTranspose.setChannel((int)assignVoiceTenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 10:
+                // voice 11
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceElevenPitch);
+                messageToTranspose.setChannel((int)assignVoiceElevenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 11:
+                // voice 12
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwelvePitch);
+                messageToTranspose.setChannel((int)assignVoiceTwelveMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 12:
+                // voice 13
+                // auto oldNoteNum = messageToTranspose.getNoteNumber();
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThirteenPitch);
+                messageToTranspose.setChannel((int)assignVoiceThirteenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 13:
+                // voice 14
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourteenPitch);
+                messageToTranspose.setChannel((int)assignVoiceFourteenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 14:
+                // voice 15
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFifteenPitch);
+                messageToTranspose.setChannel((int)assignVoiceFifteenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 15:
+                // voice 16
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixteenPitch);
+                messageToTranspose.setChannel((int)assignVoiceSixteenMidiChannel);
                 
                 processedBuffer.addEvent(messageToTranspose, samplePos);
                 break;
@@ -170,6 +265,7 @@ public:
                 // voice 1
                 // auto oldNoteNum = messageToTranspose.getNoteNumber();
                 messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceOnePitch);
+                messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
                 
                 processedBuffer.addEvent(messageToTranspose, samplePos);
                 break;
@@ -177,6 +273,7 @@ public:
             case 1:
                 // voice 2
                 messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwoPitch);
+                messageToTranspose.setChannel((int)assignVoiceTwoMidiChannel);
                 
                 processedBuffer.addEvent(messageToTranspose, samplePos);
                 break;
@@ -184,6 +281,7 @@ public:
             case 2:
                 // voice 3
                 messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThreePitch);
+                messageToTranspose.setChannel((int)assignVoiceThreeMidiChannel);
                 
                 processedBuffer.addEvent(messageToTranspose, samplePos);
                 break;
@@ -191,6 +289,106 @@ public:
             case 3:
                 // voice 4
                 messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourPitch);
+                messageToTranspose.setChannel((int)assignVoiceFourMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 4:
+                // voice 5
+                // auto oldNoteNum = messageToTranspose.getNoteNumber();
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFivePitch);
+                messageToTranspose.setChannel((int)assignVoiceFiveMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 5:
+                // voice 6
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixPitch);
+                messageToTranspose.setChannel((int)assignVoiceSixMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 6:
+                // voice 7
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSevenPitch);
+                messageToTranspose.setChannel((int)assignVoiceSevenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 7:
+                // voice 8
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceEightPitch);
+                messageToTranspose.setChannel((int)assignVoiceEightMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 8:
+                // voice 9
+                // auto oldNoteNum = messageToTranspose.getNoteNumber();
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceNinePitch);
+                messageToTranspose.setChannel((int)assignVoiceNineMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 9:
+                // voice 10
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTenPitch);
+                messageToTranspose.setChannel((int)assignVoiceTenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 10:
+                // voice 11
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceElevenPitch);
+                messageToTranspose.setChannel((int)assignVoiceElevenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 11:
+                // voice 12
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwelvePitch);
+                messageToTranspose.setChannel((int)assignVoiceTwelveMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 12:
+                // voice 13
+                // auto oldNoteNum = messageToTranspose.getNoteNumber();
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThirteenPitch);
+                messageToTranspose.setChannel((int)assignVoiceThirteenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+                
+            case 13:
+                // voice 14
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourteenPitch);
+                messageToTranspose.setChannel((int)assignVoiceFourteenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 14:
+                // voice 15
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFifteenPitch);
+                messageToTranspose.setChannel((int)assignVoiceFifteenMidiChannel);
+                
+                processedBuffer.addEvent(messageToTranspose, samplePos);
+                break;
+            
+            case 15:
+                // voice 16
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixteenPitch);
+                messageToTranspose.setChannel((int)assignVoiceSixteenMidiChannel);
                 
                 processedBuffer.addEvent(messageToTranspose, samplePos);
                 break;
@@ -203,13 +401,51 @@ public:
     
     // class member
     juce::MidiBuffer processedBuffer;
-    bool voices[4] = { false, false, false, false };
-    int voiceNotes[4] = { -1, -1, -1, -1 };
+    bool voices[MAX_VOICES] = { false, false, false, false,
+                                false, false, false, false,
+                                false, false, false, false,
+                                false, false, false, false };
+    int voiceNotes[MAX_VOICES] = { -1, -1, -1, -1,
+                                   -1, -1, -1, -1,
+                                   -1, -1, -1, -1,
+                                   -1, -1, -1, -1 };
     
     float adjustMasterPitch = 0;
+    
     float adjustVoiceOnePitch = 0;
     float adjustVoiceTwoPitch = 0;
     float adjustVoiceThreePitch = 0;
     float adjustVoiceFourPitch = 0;
+    float adjustVoiceFivePitch = 0;
+    float adjustVoiceSixPitch = 0;
+    float adjustVoiceSevenPitch = 0;
+    float adjustVoiceEightPitch = 0;
+    float adjustVoiceNinePitch = 0;
+    float adjustVoiceTenPitch = 0;
+    float adjustVoiceElevenPitch = 0;
+    float adjustVoiceTwelvePitch = 0;
+    float adjustVoiceThirteenPitch = 0;
+    float adjustVoiceFourteenPitch = 0;
+    float adjustVoiceFifteenPitch = 0;
+    float adjustVoiceSixteenPitch = 0;
+    
+    float assignVoiceOneMidiChannel = 1;
+    float assignVoiceTwoMidiChannel = 1;
+    float assignVoiceThreeMidiChannel = 1;
+    float assignVoiceFourMidiChannel = 1;
+    float assignVoiceFiveMidiChannel = 1;
+    float assignVoiceSixMidiChannel = 1;
+    float assignVoiceSevenMidiChannel = 1;
+    float assignVoiceEightMidiChannel = 1;
+    float assignVoiceNineMidiChannel = 1;
+    float assignVoiceTenMidiChannel = 1;
+    float assignVoiceElevenMidiChannel = 1;
+    float assignVoiceTwelveMidiChannel = 1;
+    float assignVoiceThirteenMidiChannel = 1;
+    float assignVoiceFourteenMidiChannel = 1;
+    float assignVoiceFifteenMidiChannel = 1;
+    float assignVoiceSixteenMidiChannel = 1;
+
+    
 };
 
