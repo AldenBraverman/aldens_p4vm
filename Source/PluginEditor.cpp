@@ -16,7 +16,7 @@ Aldens_p4vmAudioProcessorEditor::Aldens_p4vmAudioProcessorEditor (Aldens_p4vmAud
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     
-    startTimerHz(60); // 60 FPS
+    // startTimerHz(60); // 60 FPS
     setSize (400, 300);
 }
 
@@ -38,12 +38,4 @@ void Aldens_p4vmAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-}
-
-void Aldens_p4vmAudioProcessorEditor::timerCallback()
-{
-    // DBG("Timer Callback!");
-    // timeFloat += 0.01f;
-    // openGLComponent.openGLtimeFloat += 0.01f;
-    // DBG(timeFloat);
 }

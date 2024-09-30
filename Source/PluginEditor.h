@@ -30,9 +30,5 @@ private:
     // access the processor object that created it.
     Aldens_p4vmAudioProcessor& audioProcessor;
     
-    // OpenGLComponent openGLComponent;
-    
-    void timerCallback() final;
-    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Aldens_p4vmAudioProcessorEditor)
 };
