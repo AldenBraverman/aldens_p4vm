@@ -38,6 +38,8 @@ namespace ParameterID
     PARAMETER_ID(voiceFifteenTranspose);
     PARAMETER_ID(voiceSixteenTranspose);
 
+    PARAMETER_ID(majorScaleFix);
+
     /*
     PARAMETER_ID(voiceOneMidiChannel);
     PARAMETER_ID(voiceTwoMidiChannel);
@@ -127,6 +129,8 @@ private:
     juce::AudioParameterFloat* voiceFourteenTransposeParam;
     juce::AudioParameterFloat* voiceFifteenTransposeParam;
     juce::AudioParameterFloat* voiceSixteenTransposeParam;
+    
+    juce::AudioParameterBool* majorScaleFixParam;
     
     /*
     juce::AudioParameterChoice* voiceOneMidiChannelParam;

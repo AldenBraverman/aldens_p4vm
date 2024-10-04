@@ -27,6 +27,25 @@ inline const char * const BoolToString(bool b)
 class MidiProcessor
 {
 public:
+    void reset() {
+        int baseOctave = 0; // Starting from C0
+        int numOctaves = 8; // C0 to C7
+        
+        std::vector<int> baseScale = { 0, 2, 4, 5, 7, 9, 11 }; // Intervals for major scale
+        
+        for (int octave = baseOctave;octave < numOctaves; ++octave) {
+            int baseMidi = 12 * (octave + 1); // Base MIDI number for the given octave (C0=12,C1=24,etc.)
+            for (int interval : baseScale) {
+                majorScaleMidiNumbers.push_back(baseMidi + interval);
+            }
+        }
+    }
+    
+    // Check if MIDI number exists in vector
+    bool contains(int midi) const {
+        return std::find(majorScaleMidiNumbers.begin(), majorScaleMidiNumbers.end(), midi) != majorScaleMidiNumbers.end();
+    }
+    
     void process(juce::MidiBuffer& midiMessages)
     {
         processedBuffer.clear();
@@ -124,134 +143,354 @@ public:
         switch (voice) {
             case 0:
                 // voice 1
-                // auto oldNoteNum = messageToTranspose.getNoteNumber();
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceOnePitch);
-                messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceOnePitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceOnePitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceOnePitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceOnePitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 1:
                 // voice 2
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwoPitch);
-                messageToTranspose.setChannel((int)assignVoiceTwoMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceTwoPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwoPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwoPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwoPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 2:
                 // voice 3
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThreePitch);
-                messageToTranspose.setChannel((int)assignVoiceThreeMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceThreePitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThreePitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThreePitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThreePitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 3:
                 // voice 4
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourPitch);
-                messageToTranspose.setChannel((int)assignVoiceFourMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceFourPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 4:
                 // voice 5
-                // auto oldNoteNum = messageToTranspose.getNoteNumber();
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFivePitch);
-                messageToTranspose.setChannel((int)assignVoiceFiveMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceFivePitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFivePitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFivePitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFivePitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 5:
                 // voice 6
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixPitch);
-                messageToTranspose.setChannel((int)assignVoiceSixMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceSixPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 6:
                 // voice 7
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSevenPitch);
-                messageToTranspose.setChannel((int)assignVoiceSevenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceSevenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSevenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSevenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSevenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 7:
                 // voice 8
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceEightPitch);
-                messageToTranspose.setChannel((int)assignVoiceEightMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceEightPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceEightPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceEightPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceEightPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 8:
                 // voice 9
-                // auto oldNoteNum = messageToTranspose.getNoteNumber();
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceNinePitch);
-                messageToTranspose.setChannel((int)assignVoiceNineMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceNinePitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceNinePitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceNinePitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceNinePitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 9:
                 // voice 10
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTenPitch);
-                messageToTranspose.setChannel((int)assignVoiceTenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceTenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 10:
                 // voice 11
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceElevenPitch);
-                messageToTranspose.setChannel((int)assignVoiceElevenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceElevenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceElevenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceElevenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceElevenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 11:
                 // voice 12
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwelvePitch);
-                messageToTranspose.setChannel((int)assignVoiceTwelveMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceTwelvePitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwelvePitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwelvePitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwelvePitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 12:
                 // voice 13
-                // auto oldNoteNum = messageToTranspose.getNoteNumber();
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThirteenPitch);
-                messageToTranspose.setChannel((int)assignVoiceThirteenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceThirteenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThirteenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThirteenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThirteenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 13:
                 // voice 14
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourteenPitch);
-                messageToTranspose.setChannel((int)assignVoiceFourteenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceFourteenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourteenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourteenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourteenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 14:
                 // voice 15
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFifteenPitch);
-                messageToTranspose.setChannel((int)assignVoiceFifteenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceFifteenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFifteenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFifteenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFifteenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 15:
                 // voice 16
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixteenPitch);
-                messageToTranspose.setChannel((int)assignVoiceSixteenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceSixteenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixteenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixteenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixteenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
         }
     }
@@ -263,134 +502,354 @@ public:
         switch (voice) {
             case 0:
                 // voice 1
-                // auto oldNoteNum = messageToTranspose.getNoteNumber();
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceOnePitch);
-                messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceOnePitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceOnePitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceOnePitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceOnePitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 1:
                 // voice 2
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwoPitch);
-                messageToTranspose.setChannel((int)assignVoiceTwoMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceTwoPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwoPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwoPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwoPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 2:
                 // voice 3
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThreePitch);
-                messageToTranspose.setChannel((int)assignVoiceThreeMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceThreePitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThreePitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThreePitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThreePitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 3:
                 // voice 4
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourPitch);
-                messageToTranspose.setChannel((int)assignVoiceFourMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceFourPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 4:
                 // voice 5
-                // auto oldNoteNum = messageToTranspose.getNoteNumber();
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFivePitch);
-                messageToTranspose.setChannel((int)assignVoiceFiveMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceFivePitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFivePitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFivePitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFivePitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 5:
                 // voice 6
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixPitch);
-                messageToTranspose.setChannel((int)assignVoiceSixMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceSixPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 6:
                 // voice 7
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSevenPitch);
-                messageToTranspose.setChannel((int)assignVoiceSevenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceSevenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSevenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSevenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSevenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 7:
                 // voice 8
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceEightPitch);
-                messageToTranspose.setChannel((int)assignVoiceEightMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceEightPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceEightPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceEightPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceEightPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 8:
                 // voice 9
-                // auto oldNoteNum = messageToTranspose.getNoteNumber();
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceNinePitch);
-                messageToTranspose.setChannel((int)assignVoiceNineMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceNinePitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceNinePitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceNinePitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceNinePitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 9:
                 // voice 10
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTenPitch);
-                messageToTranspose.setChannel((int)assignVoiceTenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceTenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 10:
                 // voice 11
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceElevenPitch);
-                messageToTranspose.setChannel((int)assignVoiceElevenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceElevenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceElevenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceElevenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceElevenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 11:
                 // voice 12
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwelvePitch);
-                messageToTranspose.setChannel((int)assignVoiceTwelveMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceTwelvePitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwelvePitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwelvePitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceTwelvePitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 12:
                 // voice 13
-                // auto oldNoteNum = messageToTranspose.getNoteNumber();
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThirteenPitch);
-                messageToTranspose.setChannel((int)assignVoiceThirteenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceThirteenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThirteenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThirteenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceThirteenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
                 
             case 13:
                 // voice 14
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourteenPitch);
-                messageToTranspose.setChannel((int)assignVoiceFourteenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceFourteenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourteenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourteenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFourteenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 14:
                 // voice 15
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFifteenPitch);
-                messageToTranspose.setChannel((int)assignVoiceFifteenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceFifteenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFifteenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFifteenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceFifteenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
             
             case 15:
                 // voice 16
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixteenPitch);
-                messageToTranspose.setChannel((int)assignVoiceSixteenMidiChannel);
-                
-                processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(inMajorScale){
+                    if (contains(oldNoteNum+adjustVoiceSixteenPitch)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixteenPitch);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixteenPitch+1);
+                        // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                        
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                    }
+                } else {
+                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoiceSixteenPitch);
+                    // messageToTranspose.setChannel((int)assignVoiceOneMidiChannel);
+                    
+                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                }
                 break;
         }
     }
@@ -412,6 +871,8 @@ public:
     
     float adjustMasterPitch = 0;
     
+    bool inMajorScale;
+    
     float adjustVoiceOnePitch = 0;
     float adjustVoiceTwoPitch = 0;
     float adjustVoiceThreePitch = 0;
@@ -429,6 +890,7 @@ public:
     float adjustVoiceFifteenPitch = 0;
     float adjustVoiceSixteenPitch = 0;
     
+    /*
     float assignVoiceOneMidiChannel = 1;
     float assignVoiceTwoMidiChannel = 1;
     float assignVoiceThreeMidiChannel = 1;
@@ -445,7 +907,8 @@ public:
     float assignVoiceFourteenMidiChannel = 1;
     float assignVoiceFifteenMidiChannel = 1;
     float assignVoiceSixteenMidiChannel = 1;
+    */
 
-    
+    std::vector<int> majorScaleMidiNumbers;
 };
 

@@ -42,6 +42,8 @@ Aldens_p4vmAudioProcessor::Aldens_p4vmAudioProcessor()
     castParameter(apvts, ParameterID::voiceFifteenTranspose, voiceFifteenTransposeParam);
     castParameter(apvts, ParameterID::voiceSixteenTranspose, voiceSixteenTransposeParam);
     
+    castParameter(apvts, ParameterID::majorScaleFix, majorScaleFixParam);
+    
     /*
     castParameter(apvts, ParameterID::voiceOneMidiChannel, voiceOneMidiChannelParam);
     castParameter(apvts, ParameterID::voiceTwoMidiChannel, voiceTwoMidiChannelParam);
@@ -138,6 +140,7 @@ void Aldens_p4vmAudioProcessor::prepareToPlay (double sampleRate, int samplesPer
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
+    midiProcessor.reset();
 }
 
 void Aldens_p4vmAudioProcessor::releaseResources()
@@ -204,6 +207,8 @@ void Aldens_p4vmAudioProcessor::update()
     //midiHandler.adjustVoiceFourPitch = voiceFourTransposeParam->get();
     
     midiProcessor.adjustMasterPitch = masterTransposeParam->getIndex();
+    
+    midiProcessor.inMajorScale = majorScaleFixParam->get();
     
     midiProcessor.adjustVoiceOnePitch = voiceOneTransposeParam->get();
     midiProcessor.adjustVoiceTwoPitch = voiceTwoTransposeParam->get();
@@ -334,6 +339,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                                                 "G", "G#,Ab", "A", "A#,Bb", "B" },
                                                             0.0f
                                                             ));
+    layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                          ParameterID::majorScaleFix,
+                                                          "Fix to Major Scale",
+                                                          1.0
+                                                          ));
     
     layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                            ParameterID::voiceOneTranspose,
