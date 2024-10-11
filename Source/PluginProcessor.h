@@ -40,6 +40,23 @@ namespace ParameterID
 
     PARAMETER_ID(majorScaleFix);
 
+    PARAMETER_ID(voiceOneSwitch);
+    PARAMETER_ID(voiceTwoSwitch);
+    PARAMETER_ID(voiceThreeSwitch);
+    PARAMETER_ID(voiceFourSwitch);
+    PARAMETER_ID(voiceFiveSwitch);
+    PARAMETER_ID(voiceSixSwitch);
+    PARAMETER_ID(voiceSevenSwitch);
+    PARAMETER_ID(voiceEightSwitch);
+    PARAMETER_ID(voiceNineSwitch);
+    PARAMETER_ID(voiceTenSwitch);
+    PARAMETER_ID(voiceElevenSwitch);
+    PARAMETER_ID(voiceTwelveSwitch);
+    PARAMETER_ID(voiceThirteenSwitch);
+    PARAMETER_ID(voiceFourteenSwitch);
+    PARAMETER_ID(voiceFifteenSwitch);
+    PARAMETER_ID(voiceSixteenSwitch);
+
     /*
     PARAMETER_ID(voiceOneMidiChannel);
     PARAMETER_ID(voiceTwoMidiChannel);
@@ -131,6 +148,8 @@ private:
     juce::AudioParameterFloat* voiceSixteenTransposeParam;
     
     juce::AudioParameterBool* majorScaleFixParam;
+    
+    juce::AudioParameterBool* voicesSwitchParam[16];
     
     /*
     juce::AudioParameterChoice* voiceOneMidiChannelParam;

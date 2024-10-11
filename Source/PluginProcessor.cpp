@@ -44,6 +44,24 @@ Aldens_p4vmAudioProcessor::Aldens_p4vmAudioProcessor()
     
     castParameter(apvts, ParameterID::majorScaleFix, majorScaleFixParam);
     
+    castParameter(apvts, ParameterID::voiceOneSwitch, voicesSwitchParam[0]);
+    castParameter(apvts, ParameterID::voiceTwoSwitch, voicesSwitchParam[1]);
+    castParameter(apvts, ParameterID::voiceThreeSwitch, voicesSwitchParam[2]);
+    castParameter(apvts, ParameterID::voiceFourSwitch, voicesSwitchParam[3]);
+    castParameter(apvts, ParameterID::voiceFiveSwitch, voicesSwitchParam[4]);
+    castParameter(apvts, ParameterID::voiceSixSwitch, voicesSwitchParam[5]);
+    castParameter(apvts, ParameterID::voiceSevenSwitch, voicesSwitchParam[6]);
+    castParameter(apvts, ParameterID::voiceEightSwitch, voicesSwitchParam[7]);
+    castParameter(apvts, ParameterID::voiceNineSwitch, voicesSwitchParam[8]);
+    castParameter(apvts, ParameterID::voiceTenSwitch, voicesSwitchParam[9]);
+    castParameter(apvts, ParameterID::voiceElevenSwitch, voicesSwitchParam[10]);
+    castParameter(apvts, ParameterID::voiceTwelveSwitch, voicesSwitchParam[11]);
+    castParameter(apvts, ParameterID::voiceThirteenSwitch, voicesSwitchParam[12]);
+    castParameter(apvts, ParameterID::voiceFourteenSwitch, voicesSwitchParam[13]);
+    castParameter(apvts, ParameterID::voiceFifteenSwitch, voicesSwitchParam[14]);
+    castParameter(apvts, ParameterID::voiceSixteenSwitch, voicesSwitchParam[15]);
+
+    
     /*
     castParameter(apvts, ParameterID::voiceOneMidiChannel, voiceOneMidiChannelParam);
     castParameter(apvts, ParameterID::voiceTwoMidiChannel, voiceTwoMidiChannelParam);
@@ -227,6 +245,23 @@ void Aldens_p4vmAudioProcessor::update()
     midiProcessor.adjustVoiceFifteenPitch = voiceSevenTransposeParam->get();
     midiProcessor.adjustVoiceSixteenPitch = voiceEightTransposeParam->get();
     
+    midiProcessor.isVoiceOn[0] = voicesSwitchParam[0]->get();
+    midiProcessor.isVoiceOn[1] = voicesSwitchParam[1]->get();
+    midiProcessor.isVoiceOn[2] = voicesSwitchParam[2]->get();
+    midiProcessor.isVoiceOn[3] = voicesSwitchParam[3]->get();
+    midiProcessor.isVoiceOn[4] = voicesSwitchParam[4]->get();
+    midiProcessor.isVoiceOn[5] = voicesSwitchParam[5]->get();
+    midiProcessor.isVoiceOn[6] = voicesSwitchParam[6]->get();
+    midiProcessor.isVoiceOn[7] = voicesSwitchParam[7]->get();
+    midiProcessor.isVoiceOn[8] = voicesSwitchParam[8]->get();
+    midiProcessor.isVoiceOn[9] = voicesSwitchParam[9]->get();
+    midiProcessor.isVoiceOn[10] = voicesSwitchParam[10]->get();
+    midiProcessor.isVoiceOn[11] = voicesSwitchParam[11]->get();
+    midiProcessor.isVoiceOn[12] = voicesSwitchParam[12]->get();
+    midiProcessor.isVoiceOn[13] = voicesSwitchParam[13]->get();
+    midiProcessor.isVoiceOn[14] = voicesSwitchParam[14]->get();
+    midiProcessor.isVoiceOn[15] = voicesSwitchParam[15]->get();
+    
     /*
     midiProcessor.assignVoiceOneMidiChannel = 1.0f + voiceOneMidiChannelParam->getIndex();
     midiProcessor.assignVoiceTwoMidiChannel = 1.0f + voiceTwoMidiChannelParam->getIndex();
@@ -351,12 +386,24 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                            0.0f
                                                            ));
+             
+    layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                          ParameterID::voiceOneSwitch,
+                                                          "Voice One Active",
+                                                          1.0
+                                                          ));
     
     layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                            ParameterID::voiceTwoTranspose,
                                                            "Voice Two Transpose",
                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                            0.0f
+                                                           ));
+
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceTwoSwitch,
+                                                           "Voice Two Active",
+                                                           1.0
                                                            ));
     
     layout.add(std::make_unique<juce::AudioParameterFloat>(
@@ -365,6 +412,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                            0.0f
                                                            ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceThreeSwitch,
+                                                           "Voice Three Active",
+                                                           1.0
+                                                           ));
     
     layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                            ParameterID::voiceFourTranspose,
@@ -372,12 +425,25 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                            juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                            0.0f
                                                            ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceFourSwitch,
+                                                           "Voice Four Active",
+                                                           1.0
+                                                           ));
+             
      layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                             ParameterID::voiceFiveTranspose,
                                                             "Voice Five Transpose",
                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                             0.0f
                                                             ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceFiveSwitch,
+                                                           "Voice Five Active",
+                                                           0.0
+                                                           ));
      
      layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                             ParameterID::voiceSixTranspose,
@@ -385,6 +451,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                             0.0f
                                                             ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceSixSwitch,
+                                                           "Voice Six Active",
+                                                           0.0
+                                                           ));
      
      layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                             ParameterID::voiceSevenTranspose,
@@ -392,6 +464,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                             0.0f
                                                             ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceSevenSwitch,
+                                                           "Voice Seven Active",
+                                                           0.0
+                                                           ));
      
      layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                             ParameterID::voiceEightTranspose,
@@ -399,12 +477,25 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                             0.0f
                                                             ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceEightSwitch,
+                                                           "Voice Eight Active",
+                                                           0.0
+                                                           ));
+             
      layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                             ParameterID::voiceNineTranspose,
                                                             "Voice Nine Transpose",
                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                             0.0f
                                                             ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceNineSwitch,
+                                                           "Voice Nine Active",
+                                                           0.0
+                                                           ));
      
      layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                             ParameterID::voiceTenTranspose,
@@ -412,6 +503,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                             0.0f
                                                             ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceTenSwitch,
+                                                           "Voice Ten Active",
+                                                           0.0
+                                                           ));
      
      layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                             ParameterID::voiceElevenTranspose,
@@ -419,6 +516,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                             0.0f
                                                             ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceElevenSwitch,
+                                                           "Voice Eleven Active",
+                                                           0.0
+                                                           ));
      
      layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                             ParameterID::voiceTwelveTranspose,
@@ -426,12 +529,25 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                             juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                             0.0f
                                                             ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceTwelveSwitch,
+                                                           "Voice Twelve Active",
+                                                           0.0
+                                                           ));
+             
       layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                              ParameterID::voiceThirteenTranspose,
                                                              "Voice Thirteen Transpose",
                                                              juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                              0.0f
                                                              ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceThirteenSwitch,
+                                                           "Voice Thirteen Active",
+                                                           0.0
+                                                           ));
       
       layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                              ParameterID::voiceFourteenTranspose,
@@ -439,6 +555,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                              juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                              0.0f
                                                              ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceFourteenSwitch,
+                                                           "Voice Fourteen Active",
+                                                           0.0
+                                                           ));
       
       layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                              ParameterID::voiceFifteenTranspose,
@@ -446,6 +568,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                              juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                              0.0f
                                                              ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceFifteenSwitch,
+                                                           "Voice Fifteen Active",
+                                                           0.0
+                                                           ));
       
       layout.add(std::make_unique<juce::AudioParameterFloat>(
                                                              ParameterID::voiceSixteenTranspose,
@@ -453,6 +581,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                              juce::NormalisableRange<float>(-24.0f, 24.0f, 1.0f),
                                                              0.0f
                                                              ));
+             
+     layout.add(std::make_unique<juce::AudioParameterBool>(
+                                                           ParameterID::voiceSixteenSwitch,
+                                                           "Voice Sixteen Active",
+                                                           0.0
+                                                           ));
      /*
      layout.add(std::make_unique<juce::AudioParameterChoice>(
          ParameterID::voiceOneMidiChannel,
