@@ -126,8 +126,6 @@ private:
     void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
     void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2, juce::MidiBuffer& midiMessages, int timestamp);
     
-    // MidiHandler midiHandler;
-    
     juce::AudioParameterChoice* masterTransposeParam;
     
     juce::AudioParameterFloat* voiceOneTransposeParam;
@@ -146,30 +144,13 @@ private:
     juce::AudioParameterFloat* voiceFourteenTransposeParam;
     juce::AudioParameterFloat* voiceFifteenTransposeParam;
     juce::AudioParameterFloat* voiceSixteenTransposeParam;
+
+    juce::AudioParameterFloat* voiceTransposeParam[16];
     
     juce::AudioParameterBool* majorScaleFixParam;
     
     juce::AudioParameterBool* voicesSwitchParam[16];
-    
-    /*
-    juce::AudioParameterChoice* voiceOneMidiChannelParam;
-    juce::AudioParameterChoice* voiceTwoMidiChannelParam;
-    juce::AudioParameterChoice* voiceThreeMidiChannelParam;
-    juce::AudioParameterChoice* voiceFourMidiChannelParam;
-    juce::AudioParameterChoice* voiceFiveMidiChannelParam;
-    juce::AudioParameterChoice* voiceSixMidiChannelParam;
-    juce::AudioParameterChoice* voiceSevenMidiChannelParam;
-    juce::AudioParameterChoice* voiceEightMidiChannelParam;
-    juce::AudioParameterChoice* voiceNineMidiChannelParam;
-    juce::AudioParameterChoice* voiceTenMidiChannelParam;
-    juce::AudioParameterChoice* voiceElevenMidiChannelParam;
-    juce::AudioParameterChoice* voiceTwelveMidiChannelParam;
-    juce::AudioParameterChoice* voiceThirteenMidiChannelParam;
-    juce::AudioParameterChoice* voiceFourteenMidiChannelParam;
-    juce::AudioParameterChoice* voiceFifteenMidiChannelParam;
-    juce::AudioParameterChoice* voiceSixteenMidiChannelParam;
-    */
-    
+        
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
     void valueTreePropertyChanged(juce::ValueTree&, const juce::Identifier&) override

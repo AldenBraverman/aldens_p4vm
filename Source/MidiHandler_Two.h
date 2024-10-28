@@ -14,6 +14,7 @@
  */
 
 #include <JuceHeader.h>
+#include <algorithm>
 
 // constexpr int interval = 4;
 constexpr int MAX_VOICES = 16;
@@ -31,7 +32,7 @@ public:
         int baseOctave = 0; // Starting from C0
         int numOctaves = 8; // C0 to C7
         
-        std::vector<int> baseScale = { 0, 2, 4, 5, 7, 9, 11 }; // Intervals for major scale
+        // std::vector<int> baseScale = { 0, 2, 4, 5, 7, 9, 11 }; // Intervals for major scale
         
         for (int octave = baseOctave;octave < numOctaves; ++octave) {
             int baseMidi = 12 * (octave + 1); // Base MIDI number for the given octave (C0=12,C1=24,etc.)
@@ -40,7 +41,13 @@ public:
             }
         }
         
+        // gen modes
+        for (int i = 0; i < 7; ++i) {
+            std::vector<int> mode = getModeMidiNotes(i);
+            modeMidiNumbers.push_back(mode);
+        }
         
+
         for(int i=0; i<4; i++){
             // DBG(i);
             isVoiceOn[i] = true;
@@ -51,6 +58,12 @@ public:
     // Check if MIDI number exists in vector
     bool contains(int midi) const {
         return std::find(majorScaleMidiNumbers.begin(), majorScaleMidiNumbers.end(), midi) != majorScaleMidiNumbers.end();
+    }
+
+    std::vector<int>getModeMidiNotes(int degree) const {
+        std::vector<int> mode = baseScale;
+        std::rotate(mode.begin(), mode.begin() + degree, mode.end());
+        return mode;
     }
     
     void process(juce::MidiBuffer& midiMessages)
@@ -963,27 +976,14 @@ public:
     float adjustVoiceFifteenPitch = 0;
     float adjustVoiceSixteenPitch = 0;
     
+    float adjustVoicePitch[16];
+
     bool isVoiceOn[16];
     
-    /*
-    float assignVoiceOneMidiChannel = 1;
-    float assignVoiceTwoMidiChannel = 1;
-    float assignVoiceThreeMidiChannel = 1;
-    float assignVoiceFourMidiChannel = 1;
-    float assignVoiceFiveMidiChannel = 1;
-    float assignVoiceSixMidiChannel = 1;
-    float assignVoiceSevenMidiChannel = 1;
-    float assignVoiceEightMidiChannel = 1;
-    float assignVoiceNineMidiChannel = 1;
-    float assignVoiceTenMidiChannel = 1;
-    float assignVoiceElevenMidiChannel = 1;
-    float assignVoiceTwelveMidiChannel = 1;
-    float assignVoiceThirteenMidiChannel = 1;
-    float assignVoiceFourteenMidiChannel = 1;
-    float assignVoiceFifteenMidiChannel = 1;
-    float assignVoiceSixteenMidiChannel = 1;
-    */
-
     std::vector<int> majorScaleMidiNumbers;
+
+    std::vector<std::vector<int>> modeMidiNumbers;
+
+    std::vector<int> baseScale = { 0, 2, 4, 5, 7, 9, 11 }; // Intervals for major scale
 };
 
