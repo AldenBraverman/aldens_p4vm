@@ -57,25 +57,6 @@ namespace ParameterID
     PARAMETER_ID(voiceFifteenSwitch);
     PARAMETER_ID(voiceSixteenSwitch);
 
-    /*
-    PARAMETER_ID(voiceOneMidiChannel);
-    PARAMETER_ID(voiceTwoMidiChannel);
-    PARAMETER_ID(voiceThreeMidiChannel);
-    PARAMETER_ID(voiceFourMidiChannel);
-    PARAMETER_ID(voiceFiveMidiChannel);
-    PARAMETER_ID(voiceSixMidiChannel);
-    PARAMETER_ID(voiceSevenMidiChannel);
-    PARAMETER_ID(voiceEightMidiChannel);
-    PARAMETER_ID(voiceNineMidiChannel);
-    PARAMETER_ID(voiceTenMidiChannel);
-    PARAMETER_ID(voiceElevenMidiChannel);
-    PARAMETER_ID(voiceTwelveMidiChannel);
-    PARAMETER_ID(voiceThirteenMidiChannel);
-    PARAMETER_ID(voiceFourteenMidiChannel);
-    PARAMETER_ID(voiceFifteenMidiChannel);
-    PARAMETER_ID(voiceSixteenMidiChannel);
-    */
-
     #undef PARAMETER_ID
 }
 
@@ -126,54 +107,14 @@ private:
     void splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
     void handleMIDI(uint8_t data0, uint8_t data1, uint8_t data2, juce::MidiBuffer& midiMessages, int timestamp);
     
-    // MidiHandler midiHandler;
-    
     juce::AudioParameterChoice* masterTransposeParam;
-    
-    /*
-    juce::AudioParameterFloat* voiceOneTransposeParam;
-    juce::AudioParameterFloat* voiceTwoTransposeParam;
-    juce::AudioParameterFloat* voiceThreeTransposeParam;
-    juce::AudioParameterFloat* voiceFourTransposeParam;
-    juce::AudioParameterFloat* voiceFiveTransposeParam;
-    juce::AudioParameterFloat* voiceSixTransposeParam;
-    juce::AudioParameterFloat* voiceSevenTransposeParam;
-    juce::AudioParameterFloat* voiceEightTransposeParam;
-    juce::AudioParameterFloat* voiceNineTransposeParam;
-    juce::AudioParameterFloat* voiceTenTransposeParam;
-    juce::AudioParameterFloat* voiceElevenTransposeParam;
-    juce::AudioParameterFloat* voiceTwelveTransposeParam;
-    juce::AudioParameterFloat* voiceThirteenTransposeParam;
-    juce::AudioParameterFloat* voiceFourteenTransposeParam;
-    juce::AudioParameterFloat* voiceFifteenTransposeParam;
-    juce::AudioParameterFloat* voiceSixteenTransposeParam;
-    */
     
     juce::AudioParameterFloat* voiceTransposeParam[16];
     
     juce::AudioParameterBool* majorScaleFixParam;
     
     juce::AudioParameterBool* voicesSwitchParam[16];
-    
-    /*
-    juce::AudioParameterChoice* voiceOneMidiChannelParam;
-    juce::AudioParameterChoice* voiceTwoMidiChannelParam;
-    juce::AudioParameterChoice* voiceThreeMidiChannelParam;
-    juce::AudioParameterChoice* voiceFourMidiChannelParam;
-    juce::AudioParameterChoice* voiceFiveMidiChannelParam;
-    juce::AudioParameterChoice* voiceSixMidiChannelParam;
-    juce::AudioParameterChoice* voiceSevenMidiChannelParam;
-    juce::AudioParameterChoice* voiceEightMidiChannelParam;
-    juce::AudioParameterChoice* voiceNineMidiChannelParam;
-    juce::AudioParameterChoice* voiceTenMidiChannelParam;
-    juce::AudioParameterChoice* voiceElevenMidiChannelParam;
-    juce::AudioParameterChoice* voiceTwelveMidiChannelParam;
-    juce::AudioParameterChoice* voiceThirteenMidiChannelParam;
-    juce::AudioParameterChoice* voiceFourteenMidiChannelParam;
-    juce::AudioParameterChoice* voiceFifteenMidiChannelParam;
-    juce::AudioParameterChoice* voiceSixteenMidiChannelParam;
-    */
-    
+        
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     
     void valueTreePropertyChanged(juce::ValueTree&, const juce::Identifier&) override

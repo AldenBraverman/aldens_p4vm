@@ -220,12 +220,6 @@ void Aldens_p4vmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
 
 void Aldens_p4vmAudioProcessor::update()
 {
-    //midiHandler.adjustMasterPitch = masterTransposeParam->getIndex();
-    //midiHandler.adjustVoiceOnePitch = voiceOneTransposeParam->get();
-    //midiHandler.adjustVoiceTwoPitch = voiceTwoTransposeParam->get();
-    //midiHandler.adjustVoiceThreePitch = voiceThreeTransposeParam->get();
-    //midiHandler.adjustVoiceFourPitch = voiceFourTransposeParam->get();
-    
     midiProcessor.adjustMasterPitch = masterTransposeParam->getIndex();
     
     midiProcessor.inMajorScale = majorScaleFixParam->get();
@@ -264,26 +258,6 @@ void Aldens_p4vmAudioProcessor::update()
     midiProcessor.isVoiceOn[13] = voicesSwitchParam[13]->get();
     midiProcessor.isVoiceOn[14] = voicesSwitchParam[14]->get();
     midiProcessor.isVoiceOn[15] = voicesSwitchParam[15]->get();
-    
-    /*
-    midiProcessor.assignVoiceOneMidiChannel = 1.0f + voiceOneMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceTwoMidiChannel = 1.0f + voiceTwoMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceThreeMidiChannel = 1.0f + voiceThreeMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceFourMidiChannel = 1.0f + voiceFourMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceFiveMidiChannel = 1.0f + voiceFiveMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceSixMidiChannel = 1.0f + voiceSixMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceSevenMidiChannel = 1.0f + voiceSevenMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceEightMidiChannel = 1.0f + voiceEightMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceNineMidiChannel = 1.0f + voiceNineMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceTenMidiChannel = 1.0f + voiceTenMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceElevenMidiChannel = 1.0f + voiceElevenMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceTwelveMidiChannel = 1.0f + voiceTwelveMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceThirteenMidiChannel = 1.0f + voiceThirteenMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceFourteenMidiChannel = 1.0f + voiceFourteenMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceFifteenMidiChannel = 1.0f + voiceFifteenMidiChannelParam->getIndex();
-    midiProcessor.assignVoiceSixteenMidiChannel = 1.0f + voiceSixteenMidiChannelParam->getIndex();
-    */
-
 }
 
 void Aldens_p4vmAudioProcessor::splitBufferByEvents(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
@@ -590,120 +564,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                            "Voice Sixteen Active",
                                                            0.0
                                                            ));
-     /*
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceOneMidiChannel,
-         "Voice One Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceTwoMidiChannel,
-         "Voice Two Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceThreeMidiChannel,
-         "Voice Three Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceFourMidiChannel,
-         "Voice Four Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceFiveMidiChannel,
-         "Voice Five Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceSixMidiChannel,
-         "Voice Six Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceSevenMidiChannel,
-         "Voice Seven Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceEightMidiChannel,
-         "Voice Eight Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceNineMidiChannel,
-         "Voice Nine Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-             
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceTenMidiChannel,
-         "Voice Ten Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-             
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceElevenMidiChannel,
-         "Voice Eleven Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceTwelveMidiChannel,
-         "Voice Twelve Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceThirteenMidiChannel,
-         "Voice Thirteen Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceFourteenMidiChannel,
-         "Voice Fourteen Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceFifteenMidiChannel,
-         "Voice Fifteen Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-
-     layout.add(std::make_unique<juce::AudioParameterChoice>(
-         ParameterID::voiceSixteenMidiChannel,
-         "Voice Sixteen Midi Channel",
-         juce::StringArray { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" },
-         0.0f
-     ));
-    */
-
     return layout;
 }
 

@@ -32,7 +32,7 @@ public:
         int baseOctave = 0; // Starting from C0
         int numOctaves = 8; // C0 to C7
         
-        std::vector<int> baseScale = { 0, 2, 4, 5, 7, 9, 11 }; // Intervals for major scale
+        // std::vector<int> baseScale = { 0, 2, 4, 5, 7, 9, 11 }; // Intervals for major scale
         
         for (int octave = baseOctave;octave < numOctaves; ++octave) {
             int baseMidi = 12 * (octave + 1); // Base MIDI number for the given octave (C0=12,C1=24,etc.)
@@ -41,18 +41,22 @@ public:
             }
         }
         
-        
-        
-        for(int i=0; i<4; i++){
-            // DBG(i);
-            isVoiceOn[i] = true;
+        // gen modes
+        for (int i = 0; i < 7; ++i) {
+            std::vector<int> mode = getModeMidiNotes(i);
+            modeMidiNumbers.push_back(mode);
         }
-        
     }
     
     // Check if MIDI number exists in vector
     bool contains(int midi) const {
         return std::find(majorScaleMidiNumbers.begin(), majorScaleMidiNumbers.end(), midi) != majorScaleMidiNumbers.end();
+    }
+
+    std::vector<int>getModeMidiNotes(int degree) const {
+        std::vector<int> mode = baseScale;
+        std::rotate(mode.begin(), mode.begin() + degree, mode.end());
+        return mode;
     }
     
     void process(juce::MidiBuffer& midiMessages)
@@ -160,8 +164,14 @@ public:
     
     float adjustVoicePitch[16];
     
-    bool isVoiceOn[16];
+    float adjustVoicePitch[16];
 
+    bool isVoiceOn[16];
+  
     std::vector<int> majorScaleMidiNumbers;
+
+    std::vector<std::vector<int>> modeMidiNumbers;
+
+    std::vector<int> baseScale = { 0, 2, 4, 5, 7, 9, 11 }; // Intervals for major scale
 };
 
