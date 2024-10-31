@@ -130,6 +130,7 @@ private:
     
     juce::AudioParameterChoice* masterTransposeParam;
     
+    /*
     juce::AudioParameterFloat* voiceOneTransposeParam;
     juce::AudioParameterFloat* voiceTwoTransposeParam;
     juce::AudioParameterFloat* voiceThreeTransposeParam;
@@ -146,6 +147,9 @@ private:
     juce::AudioParameterFloat* voiceFourteenTransposeParam;
     juce::AudioParameterFloat* voiceFifteenTransposeParam;
     juce::AudioParameterFloat* voiceSixteenTransposeParam;
+    */
+    
+    juce::AudioParameterFloat* voiceTransposeParam[16];
     
     juce::AudioParameterBool* majorScaleFixParam;
     
