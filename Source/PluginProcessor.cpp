@@ -25,22 +25,24 @@ Aldens_p4vmAudioProcessor::Aldens_p4vmAudioProcessor()
 {
     castParameter(apvts, ParameterID::masterTranspose, masterTransposeParam);
     
-    castParameter(apvts, ParameterID::voiceOneTranspose, voiceOneTransposeParam);
-    castParameter(apvts, ParameterID::voiceTwoTranspose, voiceTwoTransposeParam);
-    castParameter(apvts, ParameterID::voiceThreeTranspose, voiceThreeTransposeParam);
-    castParameter(apvts, ParameterID::voiceFourTranspose, voiceFourTransposeParam);
-    castParameter(apvts, ParameterID::voiceFiveTranspose, voiceFiveTransposeParam);
-    castParameter(apvts, ParameterID::voiceSixTranspose, voiceSixTransposeParam);
-    castParameter(apvts, ParameterID::voiceSevenTranspose, voiceSevenTransposeParam);
-    castParameter(apvts, ParameterID::voiceEightTranspose, voiceEightTransposeParam);
-    castParameter(apvts, ParameterID::voiceNineTranspose, voiceNineTransposeParam);
-    castParameter(apvts, ParameterID::voiceTenTranspose, voiceTenTransposeParam);
-    castParameter(apvts, ParameterID::voiceElevenTranspose, voiceElevenTransposeParam);
-    castParameter(apvts, ParameterID::voiceTwelveTranspose, voiceTwelveTransposeParam);
-    castParameter(apvts, ParameterID::voiceThirteenTranspose, voiceThirteenTransposeParam);
-    castParameter(apvts, ParameterID::voiceFourteenTranspose, voiceFourteenTransposeParam);
-    castParameter(apvts, ParameterID::voiceFifteenTranspose, voiceFifteenTransposeParam);
-    castParameter(apvts, ParameterID::voiceSixteenTranspose, voiceSixteenTransposeParam);
+    
+    castParameter(apvts, ParameterID::voiceOneTranspose, voiceTransposeParam[0]);
+    castParameter(apvts, ParameterID::voiceTwoTranspose, voiceTransposeParam[1]);
+    castParameter(apvts, ParameterID::voiceThreeTranspose, voiceTransposeParam[2]);
+    castParameter(apvts, ParameterID::voiceFourTranspose, voiceTransposeParam[3]);
+    castParameter(apvts, ParameterID::voiceFiveTranspose, voiceTransposeParam[4]);
+    castParameter(apvts, ParameterID::voiceSixTranspose, voiceTransposeParam[5]);
+    castParameter(apvts, ParameterID::voiceSevenTranspose, voiceTransposeParam[6]);
+    castParameter(apvts, ParameterID::voiceEightTranspose, voiceTransposeParam[7]);
+    castParameter(apvts, ParameterID::voiceNineTranspose, voiceTransposeParam[8]);
+    castParameter(apvts, ParameterID::voiceTenTranspose, voiceTransposeParam[9]);
+    castParameter(apvts, ParameterID::voiceElevenTranspose, voiceTransposeParam[10]);
+    castParameter(apvts, ParameterID::voiceTwelveTranspose, voiceTransposeParam[11]);
+    castParameter(apvts, ParameterID::voiceThirteenTranspose, voiceTransposeParam[12]);
+    castParameter(apvts, ParameterID::voiceFourteenTranspose, voiceTransposeParam[13]);
+    castParameter(apvts, ParameterID::voiceFifteenTranspose, voiceTransposeParam[14]);
+    castParameter(apvts, ParameterID::voiceSixteenTranspose, voiceTransposeParam[15]);
+    
     
     castParameter(apvts, ParameterID::majorScaleFix, majorScaleFixParam);
     
@@ -222,22 +224,23 @@ void Aldens_p4vmAudioProcessor::update()
     
     midiProcessor.inMajorScale = majorScaleFixParam->get();
     
-    midiProcessor.adjustVoiceOnePitch = voiceOneTransposeParam->get();
-    midiProcessor.adjustVoiceTwoPitch = voiceTwoTransposeParam->get();
-    midiProcessor.adjustVoiceThreePitch = voiceThreeTransposeParam->get();
-    midiProcessor.adjustVoiceFourPitch = voiceFourTransposeParam->get();
-    midiProcessor.adjustVoiceFivePitch = voiceFiveTransposeParam->get();
-    midiProcessor.adjustVoiceSixPitch = voiceSixTransposeParam->get();
-    midiProcessor.adjustVoiceSevenPitch = voiceSevenTransposeParam->get();
-    midiProcessor.adjustVoiceEightPitch = voiceEightTransposeParam->get();
-    midiProcessor.adjustVoiceNinePitch = voiceOneTransposeParam->get();
-    midiProcessor.adjustVoiceTenPitch = voiceTwoTransposeParam->get();
-    midiProcessor.adjustVoiceElevenPitch = voiceThreeTransposeParam->get();
-    midiProcessor.adjustVoiceTwelvePitch = voiceFourTransposeParam->get();
-    midiProcessor.adjustVoiceThirteenPitch = voiceFiveTransposeParam->get();
-    midiProcessor.adjustVoiceFourteenPitch = voiceSixTransposeParam->get();
-    midiProcessor.adjustVoiceFifteenPitch = voiceSevenTransposeParam->get();
-    midiProcessor.adjustVoiceSixteenPitch = voiceEightTransposeParam->get();
+    
+    midiProcessor.adjustVoicePitch[0] = voiceTransposeParam[0]->get();
+    midiProcessor.adjustVoicePitch[1] = voiceTransposeParam[1]->get();
+    midiProcessor.adjustVoicePitch[2] = voiceTransposeParam[2]->get();
+    midiProcessor.adjustVoicePitch[3] = voiceTransposeParam[3]->get();
+    midiProcessor.adjustVoicePitch[4] = voiceTransposeParam[4]->get();
+    midiProcessor.adjustVoicePitch[5] = voiceTransposeParam[5]->get();
+    midiProcessor.adjustVoicePitch[6] = voiceTransposeParam[6]->get();
+    midiProcessor.adjustVoicePitch[7] = voiceTransposeParam[7]->get();
+    midiProcessor.adjustVoicePitch[8] = voiceTransposeParam[8]->get();
+    midiProcessor.adjustVoicePitch[9] = voiceTransposeParam[9]->get();
+    midiProcessor.adjustVoicePitch[10] = voiceTransposeParam[10]->get();
+    midiProcessor.adjustVoicePitch[11] = voiceTransposeParam[11]->get();
+    midiProcessor.adjustVoicePitch[12] = voiceTransposeParam[12]->get();
+    midiProcessor.adjustVoicePitch[13] = voiceTransposeParam[13]->get();
+    midiProcessor.adjustVoicePitch[14] = voiceTransposeParam[14]->get();
+    midiProcessor.adjustVoicePitch[15] = voiceTransposeParam[15]->get();
     
     midiProcessor.isVoiceOn[0] = voicesSwitchParam[0]->get();
     midiProcessor.isVoiceOn[1] = voicesSwitchParam[1]->get();

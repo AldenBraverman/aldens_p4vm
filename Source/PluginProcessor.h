@@ -57,25 +57,6 @@ namespace ParameterID
     PARAMETER_ID(voiceFifteenSwitch);
     PARAMETER_ID(voiceSixteenSwitch);
 
-    /*
-    PARAMETER_ID(voiceOneMidiChannel);
-    PARAMETER_ID(voiceTwoMidiChannel);
-    PARAMETER_ID(voiceThreeMidiChannel);
-    PARAMETER_ID(voiceFourMidiChannel);
-    PARAMETER_ID(voiceFiveMidiChannel);
-    PARAMETER_ID(voiceSixMidiChannel);
-    PARAMETER_ID(voiceSevenMidiChannel);
-    PARAMETER_ID(voiceEightMidiChannel);
-    PARAMETER_ID(voiceNineMidiChannel);
-    PARAMETER_ID(voiceTenMidiChannel);
-    PARAMETER_ID(voiceElevenMidiChannel);
-    PARAMETER_ID(voiceTwelveMidiChannel);
-    PARAMETER_ID(voiceThirteenMidiChannel);
-    PARAMETER_ID(voiceFourteenMidiChannel);
-    PARAMETER_ID(voiceFifteenMidiChannel);
-    PARAMETER_ID(voiceSixteenMidiChannel);
-    */
-
     #undef PARAMETER_ID
 }
 
@@ -128,23 +109,6 @@ private:
     
     juce::AudioParameterChoice* masterTransposeParam;
     
-    juce::AudioParameterFloat* voiceOneTransposeParam;
-    juce::AudioParameterFloat* voiceTwoTransposeParam;
-    juce::AudioParameterFloat* voiceThreeTransposeParam;
-    juce::AudioParameterFloat* voiceFourTransposeParam;
-    juce::AudioParameterFloat* voiceFiveTransposeParam;
-    juce::AudioParameterFloat* voiceSixTransposeParam;
-    juce::AudioParameterFloat* voiceSevenTransposeParam;
-    juce::AudioParameterFloat* voiceEightTransposeParam;
-    juce::AudioParameterFloat* voiceNineTransposeParam;
-    juce::AudioParameterFloat* voiceTenTransposeParam;
-    juce::AudioParameterFloat* voiceElevenTransposeParam;
-    juce::AudioParameterFloat* voiceTwelveTransposeParam;
-    juce::AudioParameterFloat* voiceThirteenTransposeParam;
-    juce::AudioParameterFloat* voiceFourteenTransposeParam;
-    juce::AudioParameterFloat* voiceFifteenTransposeParam;
-    juce::AudioParameterFloat* voiceSixteenTransposeParam;
-
     juce::AudioParameterFloat* voiceTransposeParam[16];
     
     juce::AudioParameterBool* majorScaleFixParam;
