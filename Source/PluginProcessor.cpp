@@ -25,6 +25,7 @@ Aldens_p4vmAudioProcessor::Aldens_p4vmAudioProcessor()
 {
     castParameter(apvts, ParameterID::masterTranspose, masterTransposeParam);
     
+    castParameter(apvts, ParameterID::modeSelect, modeSelectParam);
     
     castParameter(apvts, ParameterID::voiceOneTranspose, voiceTransposeParam[0]);
     castParameter(apvts, ParameterID::voiceTwoTranspose, voiceTransposeParam[1]);
@@ -230,6 +231,8 @@ void Aldens_p4vmAudioProcessor::update()
     
     midiProcessor.inMajorScale = majorScaleFixParam->get();
     
+    // midiProcessor.modeSelectIndex = modeSelectParam->getIndex();
+    midiProcessor.modeSelectIndex = modeSelectParam->get();
     
     midiProcessor.adjustVoicePitch[0] = voiceTransposeParam[0]->get();
     midiProcessor.adjustVoicePitch[1] = voiceTransposeParam[1]->get();
@@ -377,6 +380,22 @@ juce::AudioProcessorValueTreeState::ParameterLayout
                                                                                 "G", "G#,Ab", "A", "A#,Bb", "B" },
                                                             0.0f
                                                             ));
+    /*
+    layout.add(std::make_unique<juce::AudioParameterChoice>(
+                                                            ParameterID::modeSelect,
+                                                            "Mode Selection",
+                                                            juce::StringArray { "Ionian", "Dorian", "Phrygian", "Lydian",
+                                                                                "Mixolydian", "Aeolian", "Locrian" },
+                                                            0.0f
+                                                            ));
+    */
+     layout.add(std::make_unique<juce::AudioParameterFloat>(
+                                                            ParameterID::modeSelect,
+                                                            "Mode Select",
+                                                            juce::NormalisableRange<float>(0.0f, 6.0f, 1.0f),
+                                                            0.0f
+                                                            ));
+             
     layout.add(std::make_unique<juce::AudioParameterBool>(
                                                           ParameterID::majorScaleFix,
                                                           "Fix to Major Scale",

@@ -41,18 +41,44 @@ public:
             }
         }
         
+        for(int i=0;i<7;i++){
+            // DBG(i);
+            modeMidiNumbers.push_back(generateModeNotes(i));
+        }
         
-        
+        /*
         for(int i=0; i<4; i++){
             // DBG(i);
             isVoiceOn[i] = true;
         }
+        */
         
+    }
+    
+    std::vector<int> generateModeNotes(int degree) const {
+        std::vector<int> modeIntervals = { 0, 2, 4, 5, 7, 9, 11 };  // Copy of base scale intervals
+        std::rotate(modeIntervals.begin(), modeIntervals.begin() + degree, modeIntervals.end());
+
+        std::vector<int> notesInMode;
+        for (int octave = 0; octave <= 10; ++octave) {  // Covers the full MIDI range
+            int baseMidi = 12 * octave;
+            for (int interval : modeIntervals) {
+                int note = baseMidi + interval;
+                if (note >= 0 && note <= 127) {  // Only include valid MIDI numbers
+                    notesInMode.push_back(note);
+                }
+            }
+        }
+        return notesInMode;
     }
     
     // Check if MIDI number exists in vector
     bool contains(int midi) const {
         return std::find(majorScaleMidiNumbers.begin(), majorScaleMidiNumbers.end(), midi) != majorScaleMidiNumbers.end();
+    }
+    
+    bool modeContains(int midi, int mode) const {
+        return std::find(modeMidiNumbers[mode].begin(), modeMidiNumbers[mode].end(), midi) != modeMidiNumbers[mode].end();
     }
     
     void process(juce::MidiBuffer& midiMessages)
@@ -105,16 +131,33 @@ public:
         
         if(isVoiceOn[voice]){
             if(inMajorScale){
-                if(contains(oldNoteNum+adjustVoicePitch[voice])) {
-                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]);
-                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(modeSelectIndex==3.0f){ // Lydian Mode - need to account for half step
+                    // Lydian
+                    if(modeContains(oldNoteNum+adjustVoicePitch[voice]+modeIntervals[modeSelectIndex],modeSelectIndex)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]+modeIntervals[modeSelectIndex]);
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                        DBG("Mode Contains True");
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]+1+modeIntervals[modeSelectIndex]);
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                        DBG("Mode Contains False");
+                    }
                 } else {
-                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]+1);
-                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                    // Non Lydian
+                    if(modeContains(oldNoteNum+adjustVoicePitch[voice]+modeIntervals[modeSelectIndex],modeSelectIndex)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]+modeIntervals[modeSelectIndex]);
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                        DBG("Mode Contains True");
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]-1+modeIntervals[modeSelectIndex]);
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                        DBG("Mode Contains False");
+                    }
                 }
             } else {
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]);
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]+modeIntervals[modeSelectIndex]);
                 processedBuffer.addEvent(messageToTranspose, samplePos);
+                DBG("No Mode Contains");
             }
         }
     }
@@ -125,15 +168,31 @@ public:
         
         if(isVoiceOn[voice]){
             if(inMajorScale){
-                if (contains(oldNoteNum+adjustVoicePitch[voice])) {
-                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]);
-                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                if(modeSelectIndex==3.0f){ // Lydian Mode - need to account for half step
+                    // Lydian
+                    if(modeContains(oldNoteNum+adjustVoicePitch[voice]+modeIntervals[modeSelectIndex],modeSelectIndex)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]+modeIntervals[modeSelectIndex]);
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                        DBG("Mode Contains True");
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]+1+modeIntervals[modeSelectIndex]);
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                        DBG("Mode Contains False");
+                    }
                 } else {
-                    messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]+1);
-                    processedBuffer.addEvent(messageToTranspose, samplePos);
+                    // Non Lydian
+                    if(modeContains(oldNoteNum+adjustVoicePitch[voice]+modeIntervals[modeSelectIndex],modeSelectIndex)) {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]+modeIntervals[modeSelectIndex]);
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                        DBG("Mode Contains True");
+                    } else {
+                        messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]-1+modeIntervals[modeSelectIndex]);
+                        processedBuffer.addEvent(messageToTranspose, samplePos);
+                        DBG("Mode Contains False");
+                    }
                 }
             } else {
-                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]);
+                messageToTranspose.setNoteNumber(oldNoteNum+adjustMasterPitch+adjustVoicePitch[voice]+modeIntervals[modeSelectIndex]);
                 processedBuffer.addEvent(messageToTranspose, samplePos);
             }
         }
@@ -145,10 +204,12 @@ public:
     
     // class member
     juce::MidiBuffer processedBuffer;
+    
     bool voices[MAX_VOICES] = { false, false, false, false,
                                 false, false, false, false,
                                 false, false, false, false,
                                 false, false, false, false };
+    
     int voiceNotes[MAX_VOICES] = { -1, -1, -1, -1,
                                    -1, -1, -1, -1,
                                    -1, -1, -1, -1,
@@ -156,12 +217,21 @@ public:
     
     float adjustMasterPitch = 0;
     
+    float modeSelectIndex = 0;
+    
     bool inMajorScale;
     
     float adjustVoicePitch[16];
     
-    bool isVoiceOn[16];
+    bool isVoiceOn[16] = { true, true, true, true,
+                           false, false, false, false,
+                           false, false, false, false,
+                           false, false, false, false };
 
     std::vector<int> majorScaleMidiNumbers;
+    
+    std::vector< std::vector<int> > modeMidiNumbers;
+    
+    std::vector<int> modeIntervals = { 0,2,4,5,7,9,11 };
 };
 

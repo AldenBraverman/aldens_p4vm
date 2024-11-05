@@ -20,6 +20,7 @@ namespace ParameterID
     #define PARAMETER_ID(str) const juce::ParameterID str(#str, 1);
 
     PARAMETER_ID(masterTranspose);
+    PARAMETER_ID(modeSelect);
 
     PARAMETER_ID(voiceOneTranspose);
     PARAMETER_ID(voiceTwoTranspose);
@@ -129,6 +130,9 @@ private:
     // MidiHandler midiHandler;
     
     juce::AudioParameterChoice* masterTransposeParam;
+    
+    // juce::AudioParameterChoice* modeSelectParam;
+    juce::AudioParameterFloat* modeSelectParam;
     
     /*
     juce::AudioParameterFloat* voiceOneTransposeParam;
