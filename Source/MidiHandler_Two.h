@@ -228,13 +228,15 @@ public:
                            false, false, false, false };
 
 
-    bool isVoiceOn[16];
+    // bool isVoiceOn[16];
   
     std::vector<int> majorScaleMidiNumbers;
     
     std::vector< std::vector<int> > modeMidiNumbers;
     
     std::vector<int> modeIntervals = { 0,2,4,5,7,9,11 };
+    
+    std::vector<int> baseScale = { 0, 2, 4, 5, 7, 9, 11 }; // Intervals for major scale
 
 };
 
